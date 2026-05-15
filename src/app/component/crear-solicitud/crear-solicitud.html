@@ -1,1 +1,53 @@
-<p>crear-solicitud works!</p>
+<div class="form-container">
+  <h2>Nueva Solicitud Académica</h2>
+  
+  <form [formGroup]="solicitudForm" (ngSubmit)="onSubmit()">
+    
+    <div class="form-group">
+      <label>Tipo de solicitud:</label>
+      <select formControlName="tipo">
+        <option value="" disabled selected>Seleccione un tipo</option>
+        @for (tipo of tiposSolicitud; track tipo) {
+          <option [value]="tipo">{{ tipo }}</option>
+        }
+      </select>
+      @if (solicitudForm.get('tipo')?.invalid && solicitudForm.get('tipo')?.touched) {
+        <div class="error">Selecciona un tipo de solicitud.</div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label>Tipo de Documento:</label>
+      <select formControlName="tipoDocumentoSolicitante">
+        <option value="" disabled selected>Seleccione</option>
+        @for (doc of tiposDocumento; track doc) {
+          <option [value]="doc">{{ doc }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Número de Documento:</label>
+      <input type="text" formControlName="documentoSolicitante" placeholder="Ej. 1094123456" />
+      @if (solicitudForm.get('documentoSolicitante')?.invalid && solicitudForm.get('documentoSolicitante')?.touched) {
+        <div class="error">El número de documento es obligatorio.</div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label>Descripción:</label>
+      <textarea formControlName="descripcion" rows="4" placeholder="Explica tu situación (mínimo 10 caracteres)..."></textarea>
+      @if (solicitudForm.get('descripcion')?.invalid && solicitudForm.get('descripcion')?.touched) {
+        <div class="error">La descripción es obligatoria y debe tener entre 10 y 500 caracteres.</div>
+      }
+    </div>
+
+    <button type="submit" [disabled]="solicitudForm.invalid || isLoading()">
+      {{ isLoading() ? 'Enviando...' : 'Registrar Solicitud' }}
+    </button>
+    
+    @if (result()) {
+      <div class="result-message">{{ result() }}</div>
+    }
+  </form>
+</div>

@@ -1,1 +1,30 @@
-<p>login works!</p>
+<div class="login-container">
+  <h2>Iniciar Sesión</h2>
+  
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    
+    <div class="form-group">
+      <label>Correo Electrónico:</label>
+      <input type="email" formControlName="email" placeholder="ejemplo@uniquindio.edu.co" />
+      @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+        <div class="error">Ingresa un correo electrónico válido.</div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label>Contraseña:</label>
+      <input type="password" formControlName="password" placeholder="Tu contraseña" />
+      @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+        <div class="error">La contraseña es obligatoria.</div>
+      }
+    </div>
+
+    <button type="submit" [disabled]="loginForm.invalid || isLoading()">
+      {{ isLoading() ? 'Autenticando...' : 'Ingresar' }}
+    </button>
+    
+    @if (errorMessage()) {
+      <div class="error-message">{{ errorMessage() }}</div>
+    }
+  </form>
+</div>

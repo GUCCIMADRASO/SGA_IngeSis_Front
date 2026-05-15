@@ -12,5 +12,6 @@ export const routes: Routes = [
   { path: '', component: Inicio },
   { path: 'registro', component: Registro },
   { path: 'login', component: Login },
+  { path: 'crear-solicitud', component: CrearSolicitud },
   { path: '**', pathMatch: 'full', redirectTo: '/' },
 ];

@@ -1,14 +1,26 @@
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../servicios/auth.service';
 import { LoginRequest } from '../../modelos/auth';
+
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { MessageModule } from 'primeng/message';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [
+    ReactiveFormsModule,
+    RouterModule,
+    CardModule,
+    InputTextModule,
+    ButtonModule,
+    MessageModule,
+  ],
   templateUrl: './login.html',
   styleUrl: './login.css',
 })
@@ -44,8 +56,7 @@ export class Login {
           // 2. Apagamos la carga
           this.isLoading.set(false);
 
-          // 3. Redirigimos al componente de crear solicitud
-          this.router.navigate(['/crear-solicitud']);
+          this.router.navigate(['/inicio']);
         },
         error: (err) => {
           // Si el backend responde 401 Credenciales Inválidas

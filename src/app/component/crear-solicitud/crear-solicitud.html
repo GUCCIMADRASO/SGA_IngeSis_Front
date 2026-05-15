@@ -1,53 +1,236 @@
-<div class="form-container">
-  <h2>Nueva Solicitud Académica</h2>
-  
-  <form [formGroup]="solicitudForm" (ngSubmit)="onSubmit()">
-    
-    <div class="form-group">
-      <label>Tipo de solicitud:</label>
-      <select formControlName="tipo">
-        <option value="" disabled selected>Seleccione un tipo</option>
-        @for (tipo of tiposSolicitud; track tipo) {
-          <option [value]="tipo">{{ tipo }}</option>
+<div class="crear-solicitud-wrapper">
+  <!-- Incluir Navbar -->
+  <app-navbar />
+
+  <div class="crear-solicitud-container">
+    <!-- Header -->
+    <div class="page-header">
+      <div class="header-content">
+        <h1 class="page-title">
+          <i class="pi pi-plus-circle"></i>
+          Nueva Solicitud Académica
+        </h1>
+        <p class="page-subtitle">
+          Complete el formulario para crear una nueva solicitud
+        </p>
+      </div>
+      <div class="header-actions">
+        <p-button
+          label="Cancelar"
+          icon="pi pi-times"
+          severity="secondary"
+          [outlined]="true"
+          routerLink="/solicitudes"
+        />
+      </div>
+    </div>
+
+    <!-- Tarjeta de Solicitante (Info automática) -->
+    <div class="solicitante-card">
+      <div class="solicitante-card-icon">
+        <i class="pi pi-user-circle"></i>
+      </div>
+      <div class="solicitante-card-info">
+        @if (cargandoPerfil()) {
+          <p-skeleton width="200px" height="1.25rem" styleClass="mb-2" />
+          <p-skeleton width="150px" height="1rem" />
+        } @else if (usuarioPerfil()) {
+          <span class="solicitante-nombre">{{ usuarioPerfil()!.nombre }}</span>
+          <span class="solicitante-doc">
+            {{ formatTipoDocumento(usuarioPerfil()!.tipoDocumento) }} &bull; {{ usuarioPerfil()!.documento }}
+          </span>
         }
-      </select>
-      @if (solicitudForm.get('tipo')?.invalid && solicitudForm.get('tipo')?.touched) {
-        <div class="error">Selecciona un tipo de solicitud.</div>
-      }
+      </div>
+      <div class="solicitante-badge">
+        <i class="pi pi-shield"></i>
+        Solicitante verificado
+      </div>
     </div>
 
-    <div class="form-group">
-      <label>Tipo de Documento:</label>
-      <select formControlName="tipoDocumentoSolicitante">
-        <option value="" disabled selected>Seleccione</option>
-        @for (doc of tiposDocumento; track doc) {
-          <option [value]="doc">{{ doc }}</option>
+    <!-- Formulario Principal -->
+    <p-card styleClass="form-card">
+      <ng-template pTemplate="header">
+        <div class="card-header-content">
+          <i class="pi pi-file-edit"></i>
+          <span>Información de la Solicitud</span>
+        </div>
+      </ng-template>
+
+      <form [formGroup]="solicitudForm" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+
+          <!-- Tipo de Solicitud -->
+          <div class="form-field form-field-full">
+            <label for="tipo" class="field-label">
+              <i class="pi pi-bookmark"></i>
+              Tipo de Solicitud
+              <span class="required">*</span>
+            </label>
+            <p-select
+              id="tipo"
+              formControlName="tipo"
+              [options]="tiposSolicitudOptions"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Seleccione el tipo de solicitud"
+              styleClass="w-full"
+              [class.ng-invalid]="solicitudForm.get('tipo')?.invalid && solicitudForm.get('tipo')?.touched"
+            >
+              <ng-template let-option pTemplate="item">
+                <div class="tipo-option">
+                  <i [class]="getTipoIcon(option.value)"></i>
+                  <div class="tipo-info">
+                    <span class="tipo-label">{{ option.label }}</span>
+                    <small class="tipo-description">{{ option.description }}</small>
+                  </div>
+                </div>
+              </ng-template>
+            </p-select>
+            @if (solicitudForm.get('tipo')?.invalid && solicitudForm.get('tipo')?.touched) {
+              <small class="p-error">
+                <i class="pi pi-exclamation-circle"></i>
+                Debe seleccionar un tipo de solicitud
+              </small>
+            }
+          </div>
+
+          <!-- Descripción -->
+          <div class="form-field form-field-full">
+            <label for="descripcion" class="field-label">
+              <i class="pi pi-align-left"></i>
+              Descripción Detallada
+              <span class="required">*</span>
+            </label>
+            <textarea
+              pInputTextarea
+              id="descripcion"
+              formControlName="descripcion"
+              [rows]="8"
+              placeholder="Describa detalladamente su solicitud. Incluya toda la información relevante que permita procesar su petición de manera efectiva..."
+              [class.ng-invalid]="solicitudForm.get('descripcion')?.invalid && solicitudForm.get('descripcion')?.touched"
+              [autoResize]="true"
+            ></textarea>
+
+            <!-- Contador de caracteres -->
+            <div class="character-counter">
+              <small [class.text-danger]="getDescripcionLength() > 500">
+                <i class="pi pi-info-circle"></i>
+                {{ getDescripcionLength() }} / 500 caracteres
+                @if (getDescripcionLength() < 10) {
+                  (mínimo 10)
+                } @else if (getDescripcionLength() > 500) {
+                  <strong>(máximo excedido)</strong>
+                }
+              </small>
+            </div>
+
+            @if (solicitudForm.get('descripcion')?.invalid && solicitudForm.get('descripcion')?.touched) {
+              <small class="p-error">
+                <i class="pi pi-exclamation-circle"></i>
+                @if (solicitudForm.get('descripcion')?.hasError('required')) {
+                  La descripción es obligatoria
+                } @else if (solicitudForm.get('descripcion')?.hasError('minlength')) {
+                  La descripción debe tener al menos 10 caracteres
+                } @else if (solicitudForm.get('descripcion')?.hasError('maxlength')) {
+                  La descripción no puede exceder 500 caracteres
+                }
+              </small>
+            }
+          </div>
+
+        </div>
+
+        <!-- Mensaje de Resultado -->
+        @if (result()) {
+          @if (result().includes('Éxito')) {
+            <p-message severity="success" styleClass="result-message-banner" [closable]="false">
+              <ng-template pTemplate>
+                <div class="custom-success-message">
+                  <i class="pi pi-check-circle"></i>
+                  <div class="message-content">
+                    <span class="message-title">¡Solicitud Creada Exitosamente!</span>
+                    <span class="message-text">{{ result() }}</span>
+                  </div>
+                </div>
+              </ng-template>
+            </p-message>
+          } @else {
+            <p-message severity="error" styleClass="result-message-banner" [closable]="false">
+              <ng-template pTemplate>
+                <div class="custom-error-message">
+                  <i class="pi pi-times-circle"></i>
+                  <span>{{ result() }}</span>
+                </div>
+              </ng-template>
+            </p-message>
+          }
         }
-      </select>
-    </div>
 
-    <div class="form-group">
-      <label>Número de Documento:</label>
-      <input type="text" formControlName="documentoSolicitante" placeholder="Ej. 1094123456" />
-      @if (solicitudForm.get('documentoSolicitante')?.invalid && solicitudForm.get('documentoSolicitante')?.touched) {
-        <div class="error">El número de documento es obligatorio.</div>
-      }
-    </div>
+        <!-- Acciones del Formulario -->
+        <div class="form-actions">
+          <p-button
+            type="button"
+            label="Cancelar"
+            icon="pi pi-times"
+            severity="secondary"
+            [outlined]="true"
+            routerLink="/solicitudes"
+            styleClass="cancel-button"
+          />
+          <p-button
+            type="submit"
+            label="{{ isLoading() ? 'Enviando...' : 'Registrar Solicitud' }}"
+            icon="{{ isLoading() ? 'pi pi-spin pi-spinner' : 'pi pi-send' }}"
+            [disabled]="solicitudForm.invalid || isLoading() || cargandoPerfil()"
+            [loading]="isLoading()"
+            styleClass="submit-button"
+          />
+        </div>
+      </form>
 
-    <div class="form-group">
-      <label>Descripción:</label>
-      <textarea formControlName="descripcion" rows="4" placeholder="Explica tu situación (mínimo 10 caracteres)..."></textarea>
-      @if (solicitudForm.get('descripcion')?.invalid && solicitudForm.get('descripcion')?.touched) {
-        <div class="error">La descripción es obligatoria y debe tener entre 10 y 500 caracteres.</div>
-      }
-    </div>
+      <ng-template pTemplate="footer">
+        <div class="card-footer-info">
+          <i class="pi pi-info-circle"></i>
+          <span>
+            Los campos marcados con
+            <span class="required">*</span>
+            son obligatorios. Una vez enviada, recibirá un código de seguimiento para su solicitud.
+          </span>
+        </div>
+      </ng-template>
+    </p-card>
 
-    <button type="submit" [disabled]="solicitudForm.invalid || isLoading()">
-      {{ isLoading() ? 'Enviando...' : 'Registrar Solicitud' }}
-    </button>
-    
-    @if (result()) {
-      <div class="result-message">{{ result() }}</div>
-    }
-  </form>
+    <!-- Información Adicional -->
+    <div class="info-section">
+      <h3 class="info-title">
+        <i class="pi pi-question-circle"></i>
+        Información Importante
+      </h3>
+      <div class="info-cards-grid">
+        <p-card styleClass="info-card">
+          <div class="info-card-content">
+            <i class="pi pi-clock info-icon"></i>
+            <h4>Tiempo de Respuesta</h4>
+            <p>Las solicitudes son procesadas en un plazo de 3 a 5 días hábiles</p>
+          </div>
+        </p-card>
+
+        <p-card styleClass="info-card">
+          <div class="info-card-content">
+            <i class="pi pi-bell info-icon"></i>
+            <h4>Seguimiento</h4>
+            <p>Puedes consultar el estado de tu solicitud en la sección "Mis Solicitudes"</p>
+          </div>
+        </p-card>
+
+        <p-card styleClass="info-card">
+          <div class="info-card-content">
+            <i class="pi pi-book info-icon"></i>
+            <h4>Historial</h4>
+            <p>Todas tus solicitudes quedan registradas con un código de seguimiento único</p>
+          </div>
+        </p-card>
+      </div>
+    </div>
+  </div>
 </div>

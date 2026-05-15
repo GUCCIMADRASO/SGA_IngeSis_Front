@@ -1,0 +1,551 @@
+/* ===== WRAPPER ===== */
+.crear-solicitud-wrapper {
+  min-height: 100vh;
+  background: var(--surface-50);
+}
+
+.crear-solicitud-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* ===== PAGE HEADER ===== */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+  animation: fadeInDown 0.6s ease-out;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.header-content {
+  flex: 1;
+}
+
+.page-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 0.5rem 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.page-title i {
+  font-size: 2.5rem;
+}
+
+.page-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  font-weight: 500;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* ===== SOLICITANTE CARD ===== */
+.solicitante-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  border: 2px solid rgba(102, 126, 234, 0.2);
+  border-radius: 12px;
+  padding: 1.25rem 1.75rem;
+  margin-bottom: 1.5rem;
+  animation: fadeInUp 0.5s ease-out 0.05s both;
+}
+
+.solicitante-card-icon i {
+  font-size: 3rem;
+  color: #667eea;
+  line-height: 1;
+}
+
+.solicitante-card-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.solicitante-nombre {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-color);
+}
+
+.solicitante-doc {
+  font-size: 0.9rem;
+  color: var(--text-color-secondary);
+}
+
+.solicitante-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #059669;
+  background: rgba(5, 150, 105, 0.1);
+  border: 1px solid rgba(5, 150, 105, 0.3);
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.solicitante-badge i {
+  font-size: 0.9rem;
+}
+
+/* ===== FORM CARD ===== */
+::ng-deep .form-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 2rem;
+  animation: fadeInUp 0.6s ease-out 0.1s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+::ng-deep .form-card .p-card-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1.5rem;
+  border: none;
+}
+
+.card-header-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.card-header-content i {
+  font-size: 1.5rem;
+}
+
+::ng-deep .form-card .p-card-body {
+  padding: 2.5rem;
+}
+
+::ng-deep .form-card .p-card-footer {
+  background: var(--surface-50);
+  border-top: 1px solid var(--surface-200);
+  padding: 1.25rem 2.5rem;
+}
+
+/* ===== FORM GRID ===== */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field-full {
+  grid-column: 1 / -1;
+}
+
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-color);
+  margin-bottom: 0.5rem;
+}
+
+.field-label i {
+  color: var(--primary-color);
+  font-size: 1rem;
+}
+
+.required {
+  color: var(--red-500);
+  margin-left: 0.25rem;
+  font-weight: 700;
+}
+
+/* ===== INPUTS ===== */
+::ng-deep .form-field input.p-inputtext,
+::ng-deep .form-field .p-select,
+::ng-deep .form-field textarea.p-inputtextarea {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  border: 2px solid var(--surface-300);
+}
+
+::ng-deep .form-field input.p-inputtext:focus,
+::ng-deep .form-field textarea.p-inputtextarea:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.1);
+}
+
+::ng-deep .form-field .p-select:not(.p-disabled):hover .p-select-label {
+  border-color: var(--primary-color);
+}
+
+::ng-deep .form-field .p-select:not(.p-disabled).p-focus .p-select-label {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.1);
+}
+
+::ng-deep .form-field input.ng-invalid.ng-touched,
+::ng-deep .form-field textarea.ng-invalid.ng-touched,
+::ng-deep .form-field .p-select.ng-invalid.ng-touched .p-select-label {
+  border-color: var(--red-500);
+}
+
+::ng-deep .form-field input.ng-invalid.ng-touched:focus,
+::ng-deep .form-field textarea.ng-invalid.ng-touched:focus {
+  box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.1);
+}
+
+/* ===== TEXTAREA ===== */
+::ng-deep .form-field textarea.p-inputtextarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+.character-counter {
+  margin-top: 0.5rem;
+  text-align: right;
+}
+
+.character-counter small {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.375rem;
+  color: var(--text-color-secondary);
+  font-size: 0.85rem;
+}
+
+.character-counter .text-danger {
+  color: var(--red-500);
+  font-weight: 600;
+}
+
+/* ===== SELECT OPTIONS ===== */
+.tipo-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.tipo-option i {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  flex-shrink: 0;
+}
+
+.tipo-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.tipo-label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
+
+.tipo-description {
+  font-size: 0.85rem;
+  color: var(--text-color-secondary);
+  margin-top: 0.25rem;
+}
+
+/* ===== ERRORS ===== */
+.p-error {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--red-500);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+.p-error i {
+  font-size: 0.875rem;
+}
+
+/* ===== MESSAGES ===== */
+::ng-deep .result-message-banner {
+  margin-bottom: 2rem;
+  border-radius: 8px;
+}
+
+.custom-success-message,
+.custom-error-message {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+}
+
+.custom-success-message i,
+.custom-error-message i {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.message-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.message-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.message-text {
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+/* ===== FORM ACTIONS ===== */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+::ng-deep .form-actions .cancel-button {
+  flex: 1;
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+::ng-deep .form-actions .submit-button {
+  flex: 2;
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+::ng-deep .form-actions .submit-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+::ng-deep .form-actions .submit-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+::ng-deep .form-actions .submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ===== CARD FOOTER ===== */
+.card-footer-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--text-color-secondary);
+}
+
+.card-footer-info i {
+  color: var(--primary-color);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* ===== INFO SECTION ===== */
+.info-section {
+  margin-top: 2rem;
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.info-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-color);
+  margin: 0 0 1.5rem 0;
+}
+
+.info-title i {
+  color: var(--primary-color);
+  font-size: 1.75rem;
+}
+
+.info-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+::ng-deep .info-card {
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+::ng-deep .info-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: var(--primary-200);
+}
+
+::ng-deep .info-card .p-card-body {
+  padding: 1.5rem;
+}
+
+.info-card-content {
+  text-align: center;
+}
+
+.info-icon {
+  font-size: 3rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.info-card-content h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0 0 0.5rem 0;
+}
+
+.info-card-content p {
+  font-size: 0.9rem;
+  color: var(--text-color-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 960px) {
+  .crear-solicitud-container {
+    padding: 1.5rem;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1.5rem;
+  }
+
+  .page-title {
+    font-size: 1.75rem;
+  }
+
+  .page-title i {
+    font-size: 2rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .form-field-full {
+    grid-column: 1;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  ::ng-deep .form-actions .cancel-button,
+  ::ng-deep .form-actions .submit-button {
+    width: 100%;
+  }
+
+  .info-cards-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .crear-solicitud-container {
+    padding: 1rem;
+  }
+
+  .page-header {
+    padding: 1.25rem;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  ::ng-deep .form-card .p-card-body {
+    padding: 1.5rem;
+  }
+
+  ::ng-deep .form-card .p-card-footer {
+    padding: 1rem 1.5rem;
+  }
+
+  .form-grid {
+    gap: 1.25rem;
+  }
+
+  .info-title {
+    font-size: 1.25rem;
+  }
+}

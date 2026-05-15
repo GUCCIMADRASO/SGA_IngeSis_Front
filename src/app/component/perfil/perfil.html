@@ -1,1 +1,203 @@
-<p>perfil works!</p>
+<app-navbar></app-navbar>
+
+<div class="perfil-container">
+  @if (cargando()) {
+    <p-card>
+      <div class="loading-state">
+        <p-progressSpinner styleClass="custom-spinner"></p-progressSpinner>
+        <p>Cargando perfil...</p>
+      </div>
+    </p-card>
+  } @else if (usuario()) {
+    <!-- Header del Perfil -->
+    <p-card class="header-card">
+      <div class="perfil-header">
+        <div class="avatar-section">
+          <p-avatar 
+            [label]="getInitials()" 
+            size="xlarge"
+            [style]="{ 
+              'background-color': '#667eea', 
+              'color': '#ffffff',
+              'font-size': '3rem',
+              'width': '120px',
+              'height': '120px'
+            }">
+          </p-avatar>
+          <p-badge 
+            [value]="usuario()!.rol" 
+            [severity]="getRolSeverity()"
+            styleClass="rol-badge">
+          </p-badge>
+        </div>
+        <div class="info-section">
+          <h1 class="nombre-completo">{{ usuario()!.nombre }}</h1>
+          <div class="metadata">
+            <span class="email">
+              <i class="pi pi-envelope"></i>
+              {{ usuario()!.email }}
+            </span>
+            <span class="rol">
+              <i [class]="getRolIcon()"></i>
+              {{ formatRol(usuario()!.rol) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Grid de Información -->
+    <div class="info-grid">
+      <!-- Información Personal -->
+      <p-card header="Información Personal">
+        <div class="info-row">
+          <span class="info-label">
+            <i class="pi pi-user"></i>
+            Nombre Completo
+          </span>
+          <span class="info-value">{{ usuario()!.nombre }}</span>
+        </div>
+        <p-divider></p-divider>
+        <div class="info-row">
+          <span class="info-label">
+            <i class="pi pi-envelope"></i>
+            Correo Electrónico
+          </span>
+          <span class="info-value">{{ usuario()!.email }}</span>
+        </div>
+        <p-divider></p-divider>
+        <div class="info-row">
+          <span class="info-label">
+            <i class="pi pi-shield"></i>
+            Rol en el Sistema
+          </span>
+          <p-tag 
+            [value]="formatRol(usuario()!.rol)" 
+            [severity]="getRolSeverity()"
+            [icon]="getRolIcon()">
+          </p-tag>
+        </div>
+      </p-card>
+
+      <!-- Estadísticas (solo para ESTUDIANTE) -->
+      @if (usuario()!.rol === 'ESTUDIANTE') {
+        <p-card header="Mis Estadísticas">
+          <div class="estadisticas-grid">
+            <div class="stat-item registradas">
+              <i class="pi pi-inbox"></i>
+              <div class="stat-info">
+                <span class="stat-numero">{{ estadisticas().registradas }}</span>
+                <span class="stat-label">Registradas</span>
+              </div>
+            </div>
+            <div class="stat-item clasificadas">
+              <i class="pi pi-tag"></i>
+              <div class="stat-info">
+                <span class="stat-numero">{{ estadisticas().clasificadas }}</span>
+                <span class="stat-label">Clasificadas</span>
+              </div>
+            </div>
+            <div class="stat-item en-atencion">
+              <i class="pi pi-clock"></i>
+              <div class="stat-info">
+                <span class="stat-numero">{{ estadisticas().enAtencion }}</span>
+                <span class="stat-label">En Atención</span>
+              </div>
+            </div>
+            <div class="stat-item atendidas">
+              <i class="pi pi-check"></i>
+              <div class="stat-info">
+                <span class="stat-numero">{{ estadisticas().atendidas }}</span>
+                <span class="stat-label">Atendidas</span>
+              </div>
+            </div>
+            <div class="stat-item cerradas">
+              <i class="pi pi-lock"></i>
+              <div class="stat-info">
+                <span class="stat-numero">{{ estadisticas().cerradas }}</span>
+                <span class="stat-label">Cerradas</span>
+              </div>
+            </div>
+          </div>
+          <p-divider></p-divider>
+          <div class="total-solicitudes">
+            <span class="total-label">Total de Solicitudes</span>
+            <span class="total-numero">{{ estadisticas().total }}</span>
+          </div>
+        </p-card>
+      }
+
+      <!-- Accesos Rápidos -->
+      <p-card header="Accesos Rápidos" class="accesos-card">
+        <div class="accesos-grid">
+          @if (usuario()!.rol === 'ESTUDIANTE') {
+            <div class="acceso-item" (click)="navegarA('/crear-solicitud')">
+              <i class="pi pi-plus-circle"></i>
+              <span>Nueva Solicitud</span>
+            </div>
+            <div class="acceso-item" (click)="navegarA('/solicitudes')">
+              <i class="pi pi-list"></i>
+              <span>Mis Solicitudes</span>
+            </div>
+          } @else {
+            <div class="acceso-item" (click)="navegarA('/solicitudes')">
+              <i class="pi pi-eye"></i>
+              <span>Revisar Solicitudes</span>
+            </div>
+          }
+          <div class="acceso-item" (click)="navegarA('/inicio')">
+            <i class="pi pi-home"></i>
+            <span>Inicio</span>
+          </div>
+        </div>
+      </p-card>
+
+      <!-- Información del Rol -->
+      <p-card header="Sobre tu Rol">
+        <div class="rol-descripcion">
+          @if (usuario()!.rol === 'ESTUDIANTE') {
+            <i class="pi pi-graduation-cap rol-icon"></i>
+            <h3>Estudiante</h3>
+            <p>Como estudiante puedes crear solicitudes académicas, hacer seguimiento a su estado y gestionar tus peticiones.</p>
+            <ul>
+              <li>Crear nuevas solicitudes</li>
+              <li>Ver el estado de tus solicitudes</li>
+            </ul>
+          } @else if (usuario()!.rol === 'DOCENTE') {
+            <i class="pi pi-book rol-icon"></i>
+            <h3>Docente</h3>
+            <p>Como docente puedes revisar y atender las solicitudes asignadas a tu persona.</p>
+            <ul>
+              <li>Atender solicitudes</li>
+              <li>Clasificar peticiones</li>
+            </ul>
+          } @else if (usuario()!.rol === 'ADMINISTRATIVO') {
+            <i class="pi pi-desktop rol-icon"></i>
+            <h3>Administrativo</h3>
+            <p>Como administrativo puedes gestionar el flujo de las solicitudes y asignarlas.</p>
+            <ul>
+              <li>Asignar responsables</li>
+              <li>Actualizar estados</li>
+            </ul>
+          } @else if (usuario()!.rol === 'DIRECTIVO') {
+            <i class="pi pi-star rol-icon"></i>
+            <h3>Directivo</h3>
+            <p>Como directivo tienes acceso completo para revisar y supervisar el historial de solicitudes.</p>
+          }
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Acciones del Perfil -->
+    <p-card class="acciones-card">
+      <div class="acciones-container">
+        <p-button 
+          label="Cerrar Sesión" 
+          icon="pi pi-sign-out" 
+          severity="danger"
+          (onClick)="cerrarSesion()">
+        </p-button>
+      </div>
+    </p-card>
+  }
+</div>

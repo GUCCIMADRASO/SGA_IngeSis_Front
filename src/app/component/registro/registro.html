@@ -1,1 +1,307 @@
-<p>registro works!</p>
+<div class="registro-wrapper">
+  <div class="registro-container">
+    <!-- Header -->
+    <div class="registro-header">
+      <i class="pi pi-user-plus header-icon"></i>
+      <h1 class="header-title">Crear Nueva Cuenta</h1>
+      <p class="header-subtitle">Regístrate en el sistema de solicitudes académicas</p>
+    </div>
+
+    <!-- Card Principal -->
+    <p-card styleClass="registro-card">
+      <ng-template pTemplate="header">
+        <div class="card-header-content">
+          <i class="pi pi-id-card"></i>
+          <span>Registro de Usuario</span>
+        </div>
+      </ng-template>
+
+      <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
+        <!-- Grid de 2 columnas para campos -->
+        <div class="form-grid">
+          
+          <!-- Tipo de Documento -->
+          <div class="form-field">
+            <label for="tipoDocumento" class="field-label">
+              <i class="pi pi-file"></i>
+              Tipo de Documento
+              <span class="required">*</span>
+            </label>
+            <p-select
+              id="tipoDocumento"
+              formControlName="tipoDocumento"
+              [options]="tiposDocumento"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Selecciona tipo"
+              styleClass="w-full"
+              [class.ng-invalid]="registroForm.get('tipoDocumento')?.invalid && registroForm.get('tipoDocumento')?.touched"
+            />
+            @if (registroForm.get('tipoDocumento')?.invalid && registroForm.get('tipoDocumento')?.touched) {
+              <small class="p-error">
+                <i class="pi pi-exclamation-circle"></i>
+                El tipo de documento es obligatorio
+              </small>
+            }
+          </div>
+
+          <!-- Número de Documento -->
+          <div class="form-field">
+            <label for="numeroDocumento" class="field-label">
+              <i class="pi pi-hashtag"></i>
+              Número de Documento
+              <span class="required">*</span>
+            </label>
+            <input
+              pInputText
+              id="numeroDocumento"
+              type="text"
+              formControlName="numeroDocumento"
+              placeholder="Ej: 1234567890"
+              [class.ng-invalid]="registroForm.get('numeroDocumento')?.invalid && registroForm.get('numeroDocumento')?.touched"
+            />
+            @if (registroForm.get('numeroDocumento')?.invalid && registroForm.get('numeroDocumento')?.touched) {
+              <small class="p-error">
+                <i class="pi pi-exclamation-circle"></i>
+                El número de documento es obligatorio
+              </small>
+            }
+          </div>
+
+          <!-- Nombre Completo (Ocupa 2 columnas) -->
+          <div class="form-field form-field-full">
+            <label for="nombre" class="field-label">
+              <i class="pi pi-user"></i>
+              Nombre Completo
+              <span class="required">*</span>
+            </label>
+            <input
+              pInputText
+              id="nombre"
+              type="text"
+              formControlName="nombre"
+              placeholder="Ej: Juan Pérez García"
+              [class.ng-invalid]="registroForm.get('nombre')?.invalid && registroForm.get('nombre')?.touched"
+            />
+            @if (registroForm.get('nombre')?.invalid && registroForm.get('nombre')?.touched) {
+              <small class="p-error">
+                <i class="pi pi-exclamation-circle"></i>
+                El nombre completo es obligatorio
+              </small>
+            }
+          </div>
+
+          <!-- Email (Ocupa 2 columnas) -->
+          <div class="form-field form-field-full">
+            <label for="email" class="field-label">
+              <i class="pi pi-envelope"></i>
+              Correo Electrónico Institucional
+              <span class="required">*</span>
+            </label>
+            <input
+              pInputText
+              id="email"
+              type="email"
+              formControlName="email"
+              placeholder="ejemplo@uniquindio.edu.co"
+              [class.ng-invalid]="registroForm.get('email')?.invalid && (registroForm.get('email')?.dirty || registroForm.get('email')?.touched)"
+              autocomplete="email"
+            />
+            @if (registroForm.get('email')?.invalid && (registroForm.get('email')?.dirty || registroForm.get('email')?.touched)) {
+              <small class="p-error">
+                <i class="pi pi-exclamation-circle"></i>
+                @if (registroForm.get('email')?.hasError('required')) {
+                  El correo electrónico es obligatorio
+                } @else if (registroForm.get('email')?.hasError('email')) {
+                  Ingresa un correo electrónico válido
+                } @else if (registroForm.get('email')?.hasError('pattern')) {
+                  El correo debe ser @uniquindio.edu.co o @uqvirtual.edu.co
+                }
+              </small>
+            }
+          </div>
+
+          <!-- Contraseña -->
+          <div class="form-field">
+            <label for="password" class="field-label">
+              <i class="pi pi-lock"></i>
+              Contraseña
+              <span class="required">*</span>
+            </label>
+            <p-password
+              id="password"
+              formControlName="password"
+              placeholder="Mínimo 6 caracteres"
+              [toggleMask]="true"
+              [feedback]="true"
+              promptLabel="Ingresa una contraseña"
+              weakLabel="Débil"
+              mediumLabel="Media"
+              strongLabel="Fuerte"
+              styleClass="w-full"
+              [inputStyleClass]="registroForm.get('password')?.invalid && registroForm.get('password')?.touched ? 'ng-invalid' : ''"
+            >
+              <ng-template pTemplate="header">
+                <h6>Elige una contraseña segura</h6>
+              </ng-template>
+              <ng-template pTemplate="footer">
+                <p-divider />
+                <p class="password-hint">Recomendaciones:</p>
+                <ul class="password-requirements">
+                  <li>Mínimo 6 caracteres</li>
+                  <li>Combina letras y números</li>
+                  <li>Incluye mayúsculas y minúsculas</li>
+                </ul>
+              </ng-template>
+            </p-password>
+            @if (registroForm.get('password')?.invalid && registroForm.get('password')?.touched) {
+              <small class="p-error">
+                <i class="pi pi-exclamation-circle"></i>
+                La contraseña debe tener al menos 6 caracteres
+              </small>
+            }
+          </div>
+
+          <!-- Confirmar Contraseña -->
+          <div class="form-field">
+            <label for="confirmarPassword" class="field-label">
+              <i class="pi pi-lock"></i>
+              Confirmar Contraseña
+              <span class="required">*</span>
+            </label>
+            <p-password
+              id="confirmarPassword"
+              formControlName="confirmarPassword"
+              placeholder="Repite la contraseña"
+              [toggleMask]="true"
+              [feedback]="false"
+              styleClass="w-full"
+              [inputStyleClass]="registroForm.get('confirmarPassword')?.invalid && registroForm.get('confirmarPassword')?.touched ? 'ng-invalid' : ''"
+            />
+            @if (registroForm.get('confirmarPassword')?.invalid && registroForm.get('confirmarPassword')?.touched) {
+              <small class="p-error">
+                <i class="pi pi-exclamation-circle"></i>
+                @if (registroForm.get('confirmarPassword')?.hasError('required')) {
+                  Confirma tu contraseña
+                } @else if (registroForm.hasError('passwordMismatch')) {
+                  Las contraseñas no coinciden
+                }
+              </small>
+            }
+          </div>
+
+          <!-- Rol (Ocupa 2 columnas) -->
+          <div class="form-field form-field-full">
+            <label for="rol" class="field-label">
+              <i class="pi pi-briefcase"></i>
+              Rol en el Sistema
+              <span class="required">*</span>
+            </label>
+            <p-select
+              id="rol"
+              formControlName="rol"
+              [options]="roles"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Selecciona tu rol"
+              styleClass="w-full"
+              [class.ng-invalid]="registroForm.get('rol')?.invalid && registroForm.get('rol')?.touched"
+            >
+              <ng-template let-option pTemplate="item">
+                <div class="rol-option">
+                  <i [class]="option.icon"></i>
+                  <div class="rol-info">
+                    <span class="rol-label">{{ option.label }}</span>
+                    <small class="rol-description">{{ option.description }}</small>
+                  </div>
+                </div>
+              </ng-template>
+            </p-select>
+            @if (registroForm.get('rol')?.invalid && registroForm.get('rol')?.touched) {
+              <small class="p-error">
+                <i class="pi pi-exclamation-circle"></i>
+                Selecciona tu rol en el sistema
+              </small>
+            }
+          </div>
+
+        </div>
+
+        <!-- Mensaje de Error Global -->
+        @if (errorMessage()) {
+          <p-message
+            severity="error"
+            [text]="errorMessage()"
+            styleClass="error-message-banner"
+            [closable]="false"
+          >
+            <ng-template pTemplate>
+              <div class="custom-error-message">
+                <i class="pi pi-times-circle"></i>
+                <span>{{ errorMessage() }}</span>
+              </div>
+            </ng-template>
+          </p-message>
+        }
+
+        <!-- Mensaje de Éxito -->
+        @if (successMessage()) {
+          <p-message
+            severity="success"
+            [text]="successMessage()"
+            styleClass="success-message-banner"
+            [closable]="false"
+          >
+            <ng-template pTemplate>
+              <div class="custom-success-message">
+                <i class="pi pi-check-circle"></i>
+                <span>{{ successMessage() }}</span>
+              </div>
+            </ng-template>
+          </p-message>
+        }
+
+        <!-- Acciones -->
+        <div class="form-actions">
+          <p-button
+            type="button"
+            label="Cancelar"
+            icon="pi pi-times"
+            severity="secondary"
+            [outlined]="true"
+            routerLink="/login"
+            styleClass="cancel-button"
+          />
+          <p-button
+            type="submit"
+            label="{{ isLoading() ? 'Registrando...' : 'Crear Cuenta' }}"
+            icon="{{ isLoading() ? 'pi pi-spin pi-spinner' : 'pi pi-check' }}"
+            [disabled]="registroForm.invalid || isLoading()"
+            [loading]="isLoading()"
+            styleClass="submit-button"
+          />
+        </div>
+      </form>
+
+      <ng-template pTemplate="footer">
+        <div class="card-footer-content">
+          <p class="footer-text">
+            ¿Ya tienes una cuenta?
+            <a routerLink="/login" class="footer-link">
+              <i class="pi pi-sign-in"></i>
+              Inicia sesión aquí
+            </a>
+          </p>
+        </div>
+      </ng-template>
+    </p-card>
+
+    <!-- Footer -->
+    <div class="registro-footer">
+      <p class="footer-copyright">
+        <i class="pi pi-shield"></i>
+        Universidad del Quindío © 2025
+      </p>
+    </div>
+  </div>
+</div>

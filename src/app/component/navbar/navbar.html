@@ -1,1 +1,59 @@
-<p>navbar works!</p>
+<div class="navbar-wrapper">
+  <!-- Menubar Principal de PrimeNG -->
+  <p-menubar [model]="menuItems" styleClass="navbar-menubar">
+    <!-- Logo y Título (Start) -->
+    <ng-template pTemplate="start">
+      <div class="navbar-brand" routerLink="/inicio">
+        <i class="pi pi-graduation-cap brand-icon"></i>
+        <div class="brand-text">
+          <span class="brand-title">SGA</span>
+          <span class="brand-subtitle">Universidad del Quindío</span>
+        </div>
+      </div>
+    </ng-template>
+
+    <!-- Usuario y Acciones (End) -->
+    <ng-template pTemplate="end">
+      <div class="navbar-user-section">
+        <!-- Información del Usuario -->
+        @if (usuario()) {
+          <div class="user-info">
+            <div class="user-details">
+              <span class="user-name">{{ usuario()?.nombre }}</span>
+              <span class="user-role">
+                <i [class]="getRolIcon(usuario()?.rol!)"></i>
+                {{ usuario()?.rol }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Avatar con Menú -->
+          <div class="user-avatar-container">
+            <p-avatar
+              [label]="getInitials(usuario()?.nombre!)"
+              styleClass="user-avatar"
+              shape="circle"
+              size="large"
+              (click)="userMenu.toggle($event)"
+            />
+            <p-badge
+              [value]="usuario()?.rol === 'ESTUDIANTE' ? 'E' : 
+                       usuario()?.rol === 'DOCENTE' ? 'D' : 
+                       usuario()?.rol === 'ADMINISTRATIVO' ? 'A' : 'Dir'"
+              [severity]="getRolSeverity(usuario()?.rol!)"
+              styleClass="role-badge"
+            />
+          </div>
+
+          <!-- Menú Overlay del Usuario -->
+          <p-menu #userMenu [model]="userMenuItems" [popup]="true" styleClass="user-menu" />
+        } @else {
+          <!-- Loading State -->
+          <div class="user-loading">
+            <p-skeleton shape="circle" size="3rem" />
+          </div>
+        }
+      </div>
+    </ng-template>
+  </p-menubar>
+</div>

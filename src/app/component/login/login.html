@@ -1,30 +1,124 @@
-<div class="login-container">
-  <h2>Iniciar Sesión</h2>
-  
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    
-    <div class="form-group">
-      <label>Correo Electrónico:</label>
-      <input type="email" formControlName="email" placeholder="ejemplo@uniquindio.edu.co" />
-      @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
-        <div class="error">Ingresa un correo electrónico válido.</div>
-      }
+<div class="login-wrapper">
+  <div class="login-container">
+    <!-- Header con logo/título -->
+    <div class="login-header">
+      <i class="pi pi-graduation-cap header-icon"></i>
+      <h1 class="header-title">Sistema de Gestión de Solicitudes Académicas</h1>
+      <p class="header-subtitle">Inicia sesión para continuar</p>
     </div>
 
-    <div class="form-group">
-      <label>Contraseña:</label>
-      <input type="password" formControlName="password" placeholder="Tu contraseña" />
-      @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-        <div class="error">La contraseña es obligatoria.</div>
-      }
-    </div>
+    <!-- Card principal de login -->
+    <p-card styleClass="login-card">
+      <ng-template pTemplate="header">
+        <div class="card-header-content">
+          <i class="pi pi-sign-in"></i>
+          <span>Iniciar Sesión</span>
+        </div>
+      </ng-template>
 
-    <button type="submit" [disabled]="loginForm.invalid || isLoading()">
-      {{ isLoading() ? 'Autenticando...' : 'Ingresar' }}
-    </button>
-    
-    @if (errorMessage()) {
-      <div class="error-message">{{ errorMessage() }}</div>
-    }
-  </form>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <!-- Campo Email -->
+        <div class="form-field">
+          <label for="email" class="field-label">
+            <i class="pi pi-envelope"></i>
+            Correo Electrónico
+          </label>
+          <input
+            pInputText
+            id="email"
+            type="email"
+            formControlName="email"
+            placeholder="ejemplo@uniquindio.edu.co"
+            [class.ng-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
+            [class.ng-dirty]="loginForm.get('email')?.touched"
+            autocomplete="email"
+          />
+          @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+            <small class="p-error">
+              <i class="pi pi-exclamation-circle"></i>
+              @if (loginForm.get('email')?.hasError('required')) {
+                El correo electrónico es obligatorio
+              } @else if (loginForm.get('email')?.hasError('email')) {
+                Ingresa un correo electrónico válido
+              }
+            </small>
+          }
+        </div>
+
+        <!-- Campo Contraseña -->
+        <div class="form-field">
+          <label for="password" class="field-label">
+            <i class="pi pi-lock"></i>
+            Contraseña
+          </label>
+          <input
+            pInputText
+            id="password"
+            type="password"
+            formControlName="password"
+            placeholder="Ingresa tu contraseña"
+            [class.ng-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
+            [class.ng-dirty]="loginForm.get('password')?.touched"
+            autocomplete="current-password"
+          />
+          @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+            <small class="p-error">
+              <i class="pi pi-exclamation-circle"></i>
+              La contraseña es obligatoria
+            </small>
+          }
+        </div>
+
+        <!-- Mensaje de error global -->
+        @if (errorMessage()) {
+          <p-message
+            severity="error"
+            [text]="errorMessage()"
+            styleClass="error-message-banner"
+            [closable]="false"
+          >
+            <ng-template pTemplate>
+              <div class="custom-error-message">
+                <i class="pi pi-times-circle"></i>
+                <span>{{ errorMessage() }}</span>
+              </div>
+            </ng-template>
+          </p-message>
+        }
+
+        <!-- Botón de envío -->
+        <div class="form-actions">
+          <p-button
+            type="submit"
+            label="{{ isLoading() ? 'Autenticando...' : 'Iniciar Sesión' }}"
+            icon="{{ isLoading() ? 'pi pi-spin pi-spinner' : 'pi pi-sign-in' }}"
+            [disabled]="loginForm.invalid || isLoading()"
+            [loading]="isLoading()"
+            styleClass="w-full"
+            size="large"
+          />
+        </div>
+      </form>
+
+      <ng-template pTemplate="footer">
+        <div class="card-footer-content">
+          <p class="footer-text">
+            ¿No tienes una cuenta?
+            <a routerLink="/registro" class="footer-link">
+              <i class="pi pi-user-plus"></i>
+              Regístrate aquí
+            </a>
+          </p>
+        </div>
+      </ng-template>
+    </p-card>
+
+    <!-- Footer -->
+    <div class="login-footer">
+      <p class="footer-copyright">
+        <i class="pi pi-shield"></i>
+        Universidad del Quindío © 2026
+      </p>
+    </div>
+  </div>
 </div>

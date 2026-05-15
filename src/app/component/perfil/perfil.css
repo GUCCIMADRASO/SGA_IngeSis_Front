@@ -1,0 +1,364 @@
+.perfil-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Header Card */
+.header-card {
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.header-card ::ng-deep .p-card-body {
+  padding: 3rem;
+}
+
+.perfil-header {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.avatar-section {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.rol-badge {
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.info-section {
+  flex: 1;
+}
+
+.nombre-completo {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.metadata {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-size: 1rem;
+  opacity: 0.95;
+}
+
+.metadata span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.metadata i {
+  font-size: 1.125rem;
+}
+
+/* Info Grid */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+}
+
+.info-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--text-color-secondary);
+}
+
+.info-label i {
+  color: #667eea;
+  font-size: 1.125rem;
+}
+
+.info-value {
+  font-weight: 500;
+  color: var(--text-color);
+  text-align: right;
+}
+
+/* Estadísticas */
+.estadisticas-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-item i {
+  font-size: 2.5rem;
+}
+
+.stat-item.pendientes {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #92400e;
+}
+
+.stat-item.aprobadas {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  color: #065f46;
+}
+
+.stat-item.revision {
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #1e40af;
+}
+
+.stat-item.rechazadas {
+  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+  color: #991b1b;
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-numero {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  opacity: 0.8;
+  margin-top: 0.25rem;
+}
+
+.total-solicitudes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.total-label {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-color-secondary);
+}
+
+.total-numero {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #667eea;
+}
+
+/* Accesos Rápidos */
+.accesos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.acceso-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem 1rem;
+  background: var(--surface-ground);
+  border: 2px solid var(--surface-border);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.acceso-item:hover {
+  border-color: #667eea;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+.acceso-item i {
+  font-size: 2rem;
+  color: #667eea;
+}
+
+.acceso-item span {
+  font-weight: 600;
+  text-align: center;
+  color: var(--text-color);
+}
+
+/* Rol Descripción */
+.rol-descripcion {
+  text-align: center;
+}
+
+.rol-icon {
+  font-size: 4rem;
+  color: #667eea;
+  margin-bottom: 1rem;
+}
+
+.rol-descripcion h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  color: var(--text-color);
+}
+
+.rol-descripcion p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text-color-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.rol-descripcion ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  display: inline-block;
+}
+
+.rol-descripcion li {
+  padding: 0.5rem 0;
+  color: var(--text-color);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rol-descripcion li::before {
+  content: "✓";
+  color: #667eea;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+/* Acciones Card */
+.acciones-card {
+  background: var(--surface-ground);
+}
+
+.acciones-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  gap: 1.5rem;
+}
+
+.loading-state p {
+  font-size: 1.125rem;
+  color: var(--text-color-secondary);
+  margin: 0;
+}
+
+::ng-deep .custom-spinner .p-progress-spinner-circle {
+  stroke: #667eea;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .perfil-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .info-section {
+    width: 100%;
+  }
+  
+  .metadata {
+    align-items: center;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .estadisticas-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .perfil-container {
+    padding: 0 1rem;
+    margin: 1rem auto;
+  }
+  
+  .header-card ::ng-deep .p-card-body {
+    padding: 2rem 1.5rem;
+  }
+  
+  .nombre-completo {
+    font-size: 1.75rem;
+  }
+  
+  .info-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .info-value {
+    text-align: left;
+  }
+  
+  .accesos-grid {
+    grid-template-columns: 1fr;
+  }
+}

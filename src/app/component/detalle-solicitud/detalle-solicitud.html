@@ -1,1 +1,145 @@
-<p>detalle-solicitud works!</p>
+<app-navbar></app-navbar>
+
+<div class="detalle-container">
+  @if (cargando()) {
+    <p-card>
+      <div class="loading-state">
+        <p-progressSpinner styleClass="custom-spinner"></p-progressSpinner>
+        <p>Cargando solicitud...</p>
+      </div>
+    </p-card>
+  } @else if (solicitud()) {
+    <!-- Header de la Solicitud -->
+    <p-card class="header-card">
+      <div class="solicitud-header">
+        <div class="header-left">
+          <div class="tipo-badge">
+            <i [class]="getTipoIcon(solicitud()!.tipo)"></i>
+            <span>{{ formatTipo(solicitud()!.tipo) }}</span>
+          </div>
+          <h1 class="solicitud-titulo">Solicitud {{ solicitud()!.codigo }}</h1>
+          <div class="metadata">
+            <span class="fecha">
+              <i class="pi pi-calendar"></i>
+              {{ solicitud()!.fechaCreacion | date: 'dd/MM/yyyy HH:mm' }}
+            </span>
+            <span class="solicitante">
+              <i class="pi pi-user"></i>
+              {{ solicitud()!.solicitante.nombre }}
+            </span>
+          </div>
+        </div>
+        <div class="header-right">
+          <p-tag 
+            [value]="solicitud()!.estado" 
+            [severity]="getEstadoSeverity(solicitud()!.estado)"
+            [icon]="getEstadoIcon(solicitud()!.estado)"
+            styleClass="estado-tag">
+          </p-tag>
+        </div>
+      </div>
+    </p-card>
+
+    <!-- Grid de Información -->
+    <div class="info-grid">
+      <!-- Descripción de la Solicitud -->
+      <p-card header="Descripción" class="descripcion-card">
+        <p class="descripcion-texto">{{ solicitud()!.descripcion }}</p>
+      </p-card>
+
+      <!-- Información del Solicitante -->
+      <p-card header="Información del Solicitante" class="solicitante-card">
+        <div class="info-row">
+          <span class="info-label">
+            <i class="pi pi-user"></i>
+            Nombre Completo
+          </span>
+          <span class="info-value">{{ solicitud()!.solicitante.nombre }}</span>
+        </div>
+        <p-divider></p-divider>
+        <div class="info-row">
+          <span class="info-label">
+            <i class="pi pi-id-card"></i>
+            Tipo de Documento
+          </span>
+          <span class="info-value">{{ solicitud()!.solicitante.tipoDocumento }}</span>
+        </div>
+        <p-divider></p-divider>
+        <div class="info-row">
+          <span class="info-label">
+            <i class="pi pi-hashtag"></i>
+            Número de Documento
+          </span>
+          <span class="info-value">{{ solicitud()!.solicitante.documento }}</span>
+        </div>
+      </p-card>
+
+      <!-- Detalles de la Solicitud -->
+      <p-card header="Detalles de la Solicitud" class="detalles-card">
+        <div class="info-row">
+          <span class="info-label">
+            <i class="pi pi-bookmark"></i>
+            Tipo de Solicitud
+          </span>
+          <span class="info-value">{{ formatTipo(solicitud()!.tipo) }}</span>
+        </div>
+        <p-divider></p-divider>
+        <div class="info-row">
+          <span class="info-label">
+            <i class="pi pi-flag"></i>
+            Estado Actual
+          </span>
+          <p-tag 
+            [value]="solicitud()!.estado" 
+            [severity]="getEstadoSeverity(solicitud()!.estado)">
+          </p-tag>
+        </div>
+        <p-divider></p-divider>
+        <div class="info-row">
+          <span class="info-label">
+            <i class="pi pi-calendar-plus"></i>
+            Fecha de Creación
+          </span>
+          <span class="info-value">
+            {{ solicitud()!.fechaCreacion | date: 'dd/MM/yyyy HH:mm' }}
+          </span>
+        </div>
+        @if (solicitud()!.responsable) {
+          <p-divider></p-divider>
+          <div class="info-row">
+            <span class="info-label">
+              <i class="pi pi-briefcase"></i>
+              Responsable
+            </span>
+            <span class="info-value">
+              {{ solicitud()!.responsable!.nombre }}
+            </span>
+          </div>
+        }
+      </p-card>
+    </div>
+
+    <!-- Acciones -->
+    <p-card class="acciones-card">
+      <div class="acciones-container">
+        <p-button 
+          label="Volver a Solicitudes" 
+          icon="pi pi-arrow-left" 
+          severity="secondary"
+          (onClick)="volver()">
+        </p-button>
+      </div>
+    </p-card>
+  } @else {
+    <p-card>
+      <p-message severity="warn" text="No se pudo cargar la solicitud."></p-message>
+      <div class="error-actions">
+        <p-button 
+          label="Volver" 
+          icon="pi pi-arrow-left" 
+          (onClick)="volver()">
+        </p-button>
+      </div>
+    </p-card>
+  }
+</div>

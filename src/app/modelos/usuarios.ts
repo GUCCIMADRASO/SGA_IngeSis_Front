@@ -8,8 +8,7 @@ export interface RegistrarUsuarioRequest {
 }
 
 export interface UsuarioDetalleResponse {
-  id: string;
-  documento: string;
+  numeroDocumento: string;
   tipoDocumento: string;
   nombre: string;
   email: string;

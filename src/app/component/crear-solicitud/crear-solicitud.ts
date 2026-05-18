@@ -121,7 +121,7 @@ export class CrearSolicitud implements OnInit {
     const dto: CrearSolicitudRequest = {
       tipo: this.solicitudForm.value.tipo,
       descripcion: this.solicitudForm.value.descripcion,
-      documentoSolicitante: perfil.documento,
+      documentoSolicitante: perfil.numeroDocumento,
       tipoDocumentoSolicitante: perfil.tipoDocumento,
     };
 

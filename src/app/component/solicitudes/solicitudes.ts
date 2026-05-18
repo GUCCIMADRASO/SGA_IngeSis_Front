@@ -164,10 +164,7 @@ export class Solicitudes implements OnInit {
     this.router.navigate(['/detalle-solicitud', codigo]);
   }
 
-  editarSolicitud(codigo: string): void {
-    // Por ahora redirige al detalle, podrías crear un componente de edición
-    this.router.navigate(['/detalle-solicitud', codigo]);
-  }
+
 
   formatTipo(tipo: string): string {
     const tiposMap: { [key: string]: string } = {
@@ -178,6 +175,17 @@ export class Solicitudes implements OnInit {
       CONSULTA_ACADEMICA: 'Consulta Académica',
     };
     return tiposMap[tipo] || tipo;
+  }
+
+  formatEstado(estado: string): string {
+    const estados: { [key: string]: string } = {
+      REGISTRADA: 'Registrada',
+      CLASIFICADA: 'Clasificada',
+      EN_ATENCION: 'En Atención',
+      ATENDIDA: 'Atendida',
+      CERRADA: 'Cerrada',
+    };
+    return estados[estado] || estado;
   }
 
   getEstadoSeverity(estado: string): 'success' | 'info' | 'warn' | 'danger' | 'secondary' {

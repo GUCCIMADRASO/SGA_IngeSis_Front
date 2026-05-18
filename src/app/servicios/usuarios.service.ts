@@ -17,4 +17,8 @@ export class UsuariosService {
   obtenerPerfil(): Observable<UsuarioDetalleResponse> {
     return this.http.get<UsuarioDetalleResponse>(`${this.url}/me`);
   }
+
+  obtenerResponsables(): Observable<UsuarioDetalleResponse[]> {
+    return this.http.get<UsuarioDetalleResponse[]>(`${this.url}/responsables`);
+  }
 }

@@ -239,7 +239,7 @@
               </td>
               <td>
                 <p-tag
-                  [value]="solicitud.estado"
+                  [value]="formatEstado(solicitud.estado)"
                   [severity]="getEstadoSeverity(solicitud.estado)"
                   [icon]="getEstadoIcon(solicitud.estado)"
                 />
@@ -254,16 +254,6 @@
                     size="small"
                     (onClick)="verDetalle(solicitud.codigo); $event.stopPropagation()"
                     pTooltip="Ver Detalle"
-                    tooltipPosition="top"
-                  />
-                  <p-button
-                    icon="pi pi-pencil"
-                    [rounded]="true"
-                    [outlined]="true"
-                    severity="warn"
-                    size="small"
-                    (onClick)="editarSolicitud(solicitud.codigo); $event.stopPropagation()"
-                    pTooltip="Editar"
                     tooltipPosition="top"
                   />
                 </div>

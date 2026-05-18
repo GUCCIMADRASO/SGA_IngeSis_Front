@@ -28,7 +28,7 @@ export type EstadoDeSolicitud = 'REGISTRADA' | 'CLASIFICADA' | 'EN_ATENCION' | '
 export type PrioridadDeSolicitud = 'ALTA' | 'MEDIA' | 'BAJA';
 
 export interface UsuarioResumenResponse {
-  documento: string;
+  numeroDocumento: string;
   tipoDocumento: string;
   nombre: string;
   email: string;

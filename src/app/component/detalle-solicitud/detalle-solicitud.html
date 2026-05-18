@@ -31,7 +31,7 @@
         </div>
         <div class="header-right">
           <p-tag 
-            [value]="solicitud()!.estado" 
+            [value]="formatEstado(solicitud()!.estado)" 
             [severity]="getEstadoSeverity(solicitud()!.estado)"
             [icon]="getEstadoIcon(solicitud()!.estado)"
             styleClass="estado-tag">
@@ -70,7 +70,7 @@
             <i class="pi pi-hashtag"></i>
             Número de Documento
           </span>
-          <span class="info-value">{{ solicitud()!.solicitante.documento }}</span>
+          <span class="info-value">{{ solicitud()!.solicitante.numeroDocumento }}</span>
         </div>
       </p-card>
 
@@ -90,7 +90,7 @@
             Estado Actual
           </span>
           <p-tag 
-            [value]="solicitud()!.estado" 
+            [value]="formatEstado(solicitud()!.estado)" 
             [severity]="getEstadoSeverity(solicitud()!.estado)">
           </p-tag>
         </div>
@@ -128,8 +128,172 @@
           severity="secondary"
           (onClick)="volver()">
         </p-button>
+
+        @if (solicitud()!.estado === 'REGISTRADA' && rolUsuario() === 'ADMINISTRATIVO') {
+          <p-button 
+            label="Clasificar y Asignar" 
+            icon="pi pi-sitemap" 
+            severity="warn"
+            (onClick)="abrirModalAdmin()">
+          </p-button>
+        }
+
+        @if (solicitud()!.estado === 'EN_ATENCION' && (rolUsuario() === 'DOCENTE' || rolUsuario() === 'DIRECTIVO')) {
+          <p-button 
+            label="Atender Solicitud" 
+            icon="pi pi-check-circle" 
+            severity="success"
+            (onClick)="abrirModalDocente()">
+          </p-button>
+        }
+
+        @if (solicitud()!.estado === 'ATENDIDA' && rolUsuario() === 'ESTUDIANTE') {
+          <p-button 
+            label="Aceptar Solución" 
+            icon="pi pi-check" 
+            severity="success"
+            (onClick)="abrirModalEstudiante('CERRAR')">
+          </p-button>
+
+          <p-button 
+            label="Solicitar Revisión" 
+            icon="pi pi-refresh" 
+            severity="danger"
+            (onClick)="abrirModalEstudiante('RECHAZAR')">
+          </p-button>
+        }
       </div>
     </p-card>
+
+    <!-- Modales de Acción -->
+    <p-dialog 
+      header="Clasificar y Asignar Solicitud" 
+      [modal]="true" 
+      [(visible)]="mostrarModalAdmin" 
+      [style]="{ width: '40rem' }"
+    >
+      <form [formGroup]="adminForm" (ngSubmit)="procesarAdministrativo()" class="modal-form">
+        @if (mensajeError()) {
+          <p-message severity="error" [text]="mensajeError()" styleClass="w-full mb-3"></p-message>
+        }
+        
+        <div class="field mb-3">
+          <label for="prioridad" class="block font-bold mb-2">Prioridad</label>
+          <p-select 
+            id="prioridad" 
+            formControlName="prioridad" 
+            [options]="prioridadesOptions" 
+            optionLabel="label" 
+            optionValue="value" 
+            placeholder="Seleccione la prioridad"
+            styleClass="w-full">
+          </p-select>
+        </div>
+
+        <div class="field mb-3">
+          <label for="justificacion" class="block font-bold mb-2">Justificación</label>
+          <textarea 
+            pTextarea 
+            id="justificacion" 
+            formControlName="justificacion" 
+            rows="3" 
+            class="w-full"
+            placeholder="Justificación de la clasificación">
+          </textarea>
+        </div>
+
+        <p-divider align="center">
+          <span class="p-tag">Responsable</span>
+        </p-divider>
+
+        <div class="field mb-4">
+          <label for="responsableSeleccionado" class="block font-bold mb-2">Seleccionar Docente o Directivo</label>
+          <p-select 
+            id="responsableSeleccionado" 
+            formControlName="responsableSeleccionado" 
+            [options]="responsablesOptions()" 
+            optionLabel="label" 
+            optionValue="value"
+            placeholder="Seleccione un responsable"
+            [filter]="true"
+            filterPlaceholder="Buscar por nombre o documento..."
+            styleClass="w-full">
+          </p-select>
+        </div>
+
+        <div class="flex justify-content-end gap-2">
+          <p-button label="Cancelar" severity="secondary" (onClick)="mostrarModalAdmin.set(false)"></p-button>
+          <p-button label="Guardar" type="submit" [disabled]="adminForm.invalid || enviando()" [loading]="enviando()"></p-button>
+        </div>
+      </form>
+    </p-dialog>
+
+    <p-dialog 
+      header="Atender Solicitud" 
+      [modal]="true" 
+      [(visible)]="mostrarModalDocente" 
+      [style]="{ width: '30rem' }"
+    >
+      <form [formGroup]="docenteForm" (ngSubmit)="procesarDocente()" class="modal-form">
+        @if (mensajeError()) {
+          <p-message severity="error" [text]="mensajeError()" styleClass="w-full mb-3"></p-message>
+        }
+
+        <div class="field mb-4">
+          <label for="observacionDocente" class="block font-bold mb-2">Observación de Atención</label>
+          <textarea 
+            pTextarea 
+            id="observacionDocente" 
+            formControlName="observacion" 
+            rows="4" 
+            class="w-full"
+            placeholder="Detalle la solución dada a la solicitud">
+          </textarea>
+        </div>
+
+        <div class="flex justify-content-end gap-2">
+          <p-button label="Cancelar" severity="secondary" (onClick)="mostrarModalDocente.set(false)"></p-button>
+          <p-button label="Marcar Atendida" type="submit" [disabled]="docenteForm.invalid || enviando()" [loading]="enviando()"></p-button>
+        </div>
+      </form>
+    </p-dialog>
+
+    <p-dialog 
+      [header]="accionActual() === 'RECHAZAR' ? 'Solicitar Revisión' : 'Aceptar y Cerrar Solicitud'" 
+      [modal]="true" 
+      [(visible)]="mostrarModalEstudiante" 
+      [style]="{ width: '30rem' }"
+    >
+      <form [formGroup]="estudianteForm" (ngSubmit)="procesarEstudiante()" class="modal-form">
+        @if (mensajeError()) {
+          <p-message severity="error" [text]="mensajeError()" styleClass="w-full mb-3"></p-message>
+        }
+
+        <div class="field mb-4">
+          <label for="observacionEstudiante" class="block font-bold mb-2">
+            {{ accionActual() === 'RECHAZAR' ? 'Justificación del Rechazo' : 'Comentario de Cierre' }}
+          </label>
+          <textarea 
+            pTextarea 
+            id="observacionEstudiante" 
+            formControlName="observacion" 
+            rows="4" 
+            class="w-full"
+            [placeholder]="accionActual() === 'RECHAZAR' ? 'Explique por qué la solución no es satisfactoria' : 'Opcionalmente puede dejar un comentario'">
+          </textarea>
+        </div>
+
+        <div class="flex justify-content-end gap-2">
+          <p-button label="Cancelar" severity="secondary" (onClick)="mostrarModalEstudiante.set(false)"></p-button>
+          <p-button 
+            [label]="accionActual() === 'RECHAZAR' ? 'Enviar a Revisión' : 'Aceptar Solución'" 
+            type="submit" 
+            [disabled]="estudianteForm.invalid || enviando()" 
+            [loading]="enviando()">
+          </p-button>
+        </div>
+      </form>
+    </p-dialog>
   } @else {
     <p-card>
       <p-message severity="warn" text="No se pudo cargar la solicitud."></p-message>

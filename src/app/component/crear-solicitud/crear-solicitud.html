@@ -37,7 +37,7 @@
         } @else if (usuarioPerfil()) {
           <span class="solicitante-nombre">{{ usuarioPerfil()!.nombre }}</span>
           <span class="solicitante-doc">
-            {{ formatTipoDocumento(usuarioPerfil()!.tipoDocumento) }} &bull; {{ usuarioPerfil()!.documento }}
+            {{ formatTipoDocumento(usuarioPerfil()!.tipoDocumento) }} &bull; {{ usuarioPerfil()!.numeroDocumento }}
           </span>
         }
       </div>

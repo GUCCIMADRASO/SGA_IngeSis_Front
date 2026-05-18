@@ -55,6 +55,10 @@ export class SolicitudesService {
     return this.http.put<SolicitudDetalleResponse>(`${this.url}/${codigo}/cerrar`, req);
   }
 
+  rechazarSolicitud(codigo: string, req: { justificacion: string }): Observable<SolicitudDetalleResponse> {
+    return this.http.put<SolicitudDetalleResponse>(`${this.url}/${codigo}/rechazar`, req);
+  }
+
   obtenerHistorial(codigo: string): Observable<RegistroHistorialResponse[]> {
     return this.http.get<RegistroHistorialResponse[]>(`${this.url}/${codigo}/historial`);
   }

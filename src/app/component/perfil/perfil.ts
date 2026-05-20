@@ -5,10 +5,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 // PrimeNG Modules
 import { CardModule } from 'primeng/card';
-import { AvatarModule } from 'primeng/avatar';
-import { BadgeModule } from 'primeng/badge';
 import { TagModule } from 'primeng/tag';
-import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
@@ -35,10 +32,7 @@ interface Estadisticas {
   imports: [
     CommonModule,
     CardModule,
-    AvatarModule,
-    BadgeModule,
     TagModule,
-    DividerModule,
     ButtonModule,
     ProgressSpinnerModule,
     Navbar,

@@ -1,14 +1,18 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, DestroyRef, inject, signal, computed } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../servicios/auth.service';
 import { LoginRequest } from '../../modelos/auth';
 
-import { CardModule } from 'primeng/card';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import { MessageModule } from 'primeng/message';
+// PrimeNG v21 Standalone Components
+import { InputText } from 'primeng/inputtext';
+import { Password } from 'primeng/password';
+import { Button } from 'primeng/button';
+import { Message } from 'primeng/message';
+import { Card } from 'primeng/card';
+import { IftaLabel } from 'primeng/iftalabel';
+import { Fluid } from 'primeng/fluid';
 
 @Component({
   selector: 'app-login',
@@ -16,10 +20,13 @@ import { MessageModule } from 'primeng/message';
   imports: [
     ReactiveFormsModule,
     RouterModule,
-    CardModule,
-    InputTextModule,
-    ButtonModule,
-    MessageModule,
+    InputText,
+    Password,
+    Button,
+    Message,
+    Card,
+    IftaLabel,
+    Fluid,
   ],
   templateUrl: './login.html',
   styleUrl: './login.css',
@@ -35,11 +42,17 @@ export class Login {
 
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required],
+    password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
+  // Convert Form Status Observable to Signal (Guía 15/17)
+  private formStatus = toSignal(this.loginForm.statusChanges, { initialValue: 'INVALID' as const });
+
+  // Computed Signal to determine submit state (Guía 15/17)
+  canSubmit = computed(() => this.formStatus() === 'VALID' && !this.isLoading());
+
   onSubmit(): void {
-    if (this.loginForm.invalid) return;
+    if (!this.canSubmit()) return;
 
     const credentials = this.loginForm.value as LoginRequest;
     this.isLoading.set(true);
@@ -59,7 +72,7 @@ export class Login {
           this.router.navigate(['/inicio']);
         },
         error: (err) => {
-          // Si el backend responde 401 Credenciales Inválidas
+          // Si el backend responde con error de autenticación
           this.errorMessage.set('Correo o contraseña incorrectos.');
           this.isLoading.set(false);
           console.error(err);

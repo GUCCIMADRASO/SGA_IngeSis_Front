@@ -4,17 +4,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-// PrimeNG Modules
-import { CardModule } from 'primeng/card';
-import { ButtonModule } from 'primeng/button';
-import { TagModule } from 'primeng/tag';
-import { DividerModule } from 'primeng/divider';
-import { MessageModule } from 'primeng/message';
-import { DialogModule } from 'primeng/dialog';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { InputTextModule } from 'primeng/inputtext';
-import { TextareaModule } from 'primeng/textarea';
-import { SelectModule } from 'primeng/select';
+// PrimeNG Components
+import { Card } from 'primeng/card';
+import { Button } from 'primeng/button';
+import { Tag } from 'primeng/tag';
+import { Divider } from 'primeng/divider';
+import { Message } from 'primeng/message';
+import { Dialog } from 'primeng/dialog';
+import { ProgressSpinner } from 'primeng/progressspinner';
+import { Textarea } from 'primeng/textarea';
+import { Select } from 'primeng/select';
+import { SharedModule, MessageService } from 'primeng/api';
 
 // Components
 import { Navbar } from '../navbar/navbar';
@@ -22,7 +22,7 @@ import { Navbar } from '../navbar/navbar';
 // Services y DTOs
 import { SolicitudesService } from '../../servicios/solicitudes.service';
 import { UsuariosService } from '../../servicios/usuarios.service';
-import { SolicitudDetalleResponse } from '../../modelos/solicitudes';
+import { SolicitudDetalleResponse, RegistroHistorialResponse } from '../../modelos/solicitudes';
 import { UsuarioDetalleResponse } from '../../modelos/usuarios';
 
 @Component({
@@ -31,17 +31,17 @@ import { UsuarioDetalleResponse } from '../../modelos/usuarios';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    CardModule,
-    ButtonModule,
-    TagModule,
-    DividerModule,
-    MessageModule,
-    DialogModule,
-    ProgressSpinnerModule,
-    InputTextModule,
-    TextareaModule,
-    SelectModule,
+    Card,
+    Button,
+    Tag,
+    Divider,
+    Message,
+    Dialog,
+    ProgressSpinner,
+    Textarea,
+    Select,
     Navbar,
+    SharedModule,
   ],
   templateUrl: './detalle-solicitud.html',
   styleUrl: './detalle-solicitud.css',
@@ -53,10 +53,15 @@ export class DetalleSolicitud implements OnInit {
   private usuariosService = inject(UsuariosService);
   private fb = inject(FormBuilder);
   private destroyRef = inject(DestroyRef);
+  private messageService = inject(MessageService);
 
   solicitud = signal<SolicitudDetalleResponse | null>(null);
   cargando = signal(true);
   rolUsuario = signal<string>('');
+
+  // Historial de cambios
+  historial = signal<RegistroHistorialResponse[]>([]);
+  historialLoading = signal(true);
 
   // Modales
   mostrarModalAdmin = signal(false);
@@ -112,12 +117,16 @@ export class DetalleSolicitud implements OnInit {
   }
 
   iniciarCargaSolicitud(): void {
-    const param = this.route.snapshot.paramMap.get('id');
-    if (param) {
-      this.cargarSolicitud(param);
-    } else {
-      this.cargando.set(false);
-    }
+    this.route.paramMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+      next: (params) => {
+        const id = params.get('id');
+        if (id) {
+          this.cargarSolicitud(id);
+        } else {
+          this.cargando.set(false);
+        }
+      }
+    });
   }
 
   cargarSolicitud(codigo: string): void {
@@ -134,6 +143,24 @@ export class DetalleSolicitud implements OnInit {
           console.error('Error al cargar solicitud:', err);
           this.cargando.set(false);
         },
+      });
+    this.cargarHistorial(codigo);
+  }
+
+  cargarHistorial(codigo: string): void {
+    this.historialLoading.set(true);
+    this.solicitudesService
+      .obtenerHistorial(codigo)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (historial) => {
+          this.historial.set(historial);
+          this.historialLoading.set(false);
+        },
+        error: (err: any) => {
+          console.error('Error al cargar historial:', err);
+          this.historialLoading.set(false);
+        }
       });
   }
 
@@ -179,6 +206,13 @@ export class DetalleSolicitud implements OnInit {
                 this.solicitud.set(sol);
                 this.enviando.set(false);
                 this.mostrarModalAdmin.set(false);
+                this.cargarHistorial(codigo);
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Asignada y Clasificada',
+                  detail: 'La solicitud se ha clasificado y asignado al docente/directivo.',
+                  life: 3000
+                });
               },
               error: (err: any) => {
                 this.enviando.set(false);
@@ -218,6 +252,13 @@ export class DetalleSolicitud implements OnInit {
         this.solicitud.set(sol);
         this.enviando.set(false);
         this.mostrarModalDocente.set(false);
+        this.cargarHistorial(codigo);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Solicitud Atendida',
+          detail: 'Se ha registrado la solución dada a la solicitud.',
+          life: 3000
+        });
       },
       error: (err: any) => {
         this.enviando.set(false);
@@ -226,11 +267,21 @@ export class DetalleSolicitud implements OnInit {
     });
   }
 
-  // ---- LÓGICA ESTUDIANTE ----
   abrirModalEstudiante(accion: 'CERRAR' | 'RECHAZAR'): void {
     this.mensajeError.set('');
     this.estudianteForm.reset();
     this.accionActual.set(accion as any);
+
+    const obsControl = this.estudianteForm.get('observacion');
+    if (obsControl) {
+      if (accion === 'RECHAZAR') {
+        obsControl.setValidators([Validators.required]);
+      } else {
+        obsControl.clearValidators();
+      }
+      obsControl.updateValueAndValidity();
+    }
+
     this.mostrarModalEstudiante.set(true); 
   }
 
@@ -253,6 +304,16 @@ export class DetalleSolicitud implements OnInit {
         this.solicitud.set(sol);
         this.enviando.set(false);
         this.mostrarModalEstudiante.set(false);
+        this.cargarHistorial(codigo);
+        const esRechazo = this.accionActual() === 'RECHAZAR';
+        this.messageService.add({
+          severity: esRechazo ? 'warn' : 'success',
+          summary: esRechazo ? 'Revisión Solicitada' : 'Solicitud Cerrada',
+          detail: esRechazo 
+            ? 'Se ha solicitado la revisión de la solución dada.'
+            : 'Has confirmado el cierre exitoso del trámite.',
+          life: 3000
+        });
       },
       error: (err: any) => {
         this.enviando.set(false);
@@ -270,6 +331,16 @@ export class DetalleSolicitud implements OnInit {
       CONSULTA_ACADEMICA: 'Consulta Académica',
     };
     return tipos[tipo] || tipo;
+  }
+
+  formatTipoDocumento(tipo: string): string {
+    const tiposMap: { [key: string]: string } = {
+      CEDULA: 'Cédula de Ciudadanía',
+      TARJETA_DE_IDENTIDAD: 'Tarjeta de Identidad',
+      TARJETA_EXTRANJERIA: 'Cédula de Extranjería',
+      PASAPORTE: 'Pasaporte',
+    };
+    return tiposMap[tipo] || tipo;
   }
 
   getTipoIcon(tipo: string): string {

@@ -1,28 +1,44 @@
 import { HttpInterceptorFn } from '@angular/common/http';
-
 import { catchError, throwError } from 'rxjs';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from './auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
-  const token = localStorage.getItem('auth_token');
+  const authService = inject(AuthService);
+  const token = authService.getToken();
 
   // No enviar token en las rutas públicas de autenticación y registro
   const isAuthRoute = req.url.includes('/api/auth/login') || (req.url.includes('/api/usuarios') && req.method === 'POST');
 
   if (token && !isAuthRoute) {
-    const clonedReq = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    let clonedReq;
+    if (req.method === 'GET') {
+      clonedReq = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`,
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        },
+        setParams: {
+          _t: new Date().getTime().toString()
+        }
+      });
+    } else {
+      clonedReq = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    }
     
     return next(clonedReq).pipe(
       catchError(error => {
         // Token expirado o inválido -> cerrar sesión y redirigir
         if (error.status === 401) {
-          localStorage.removeItem('auth_token');
+          authService.logout();
           router.navigate(['/login']);
         }
         return throwError(() => error);

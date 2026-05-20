@@ -4,14 +4,14 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterModule } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-// PrimeNG Modules
-import { CardModule } from 'primeng/card';
-import { InputTextModule } from 'primeng/inputtext';
-import { TextareaModule } from 'primeng/textarea';
-import { ButtonModule } from 'primeng/button';
-import { SelectModule } from 'primeng/select';
-import { MessageModule } from 'primeng/message';
-import { SkeletonModule } from 'primeng/skeleton';
+// PrimeNG Components & API
+import { Card } from 'primeng/card';
+import { Textarea } from 'primeng/textarea';
+import { Button } from 'primeng/button';
+import { Select } from 'primeng/select';
+import { Message } from 'primeng/message';
+import { Skeleton } from 'primeng/skeleton';
+import { SharedModule, MessageService } from 'primeng/api';
 
 // Components
 import { Navbar } from '../navbar/navbar';
@@ -29,13 +29,13 @@ import { UsuarioDetalleResponse } from '../../modelos/usuarios';
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
-    CardModule,
-    InputTextModule,
-    TextareaModule,
-    ButtonModule,
-    SelectModule,
-    MessageModule,
-    SkeletonModule,
+    Card,
+    Textarea,
+    Button,
+    Select,
+    Message,
+    Skeleton,
+    SharedModule,
     Navbar,
   ],
   templateUrl: './crear-solicitud.html',
@@ -47,6 +47,7 @@ export class CrearSolicitud implements OnInit {
   private usuariosService = inject(UsuariosService);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
+  private messageService = inject(MessageService);
 
   solicitudForm!: FormGroup;
   isLoading = signal(false);
@@ -131,15 +132,26 @@ export class CrearSolicitud implements OnInit {
         next: () => {
           this.isLoading.set(false);
           this.result.set('¡Éxito! Solicitud creada exitosamente. Redirigiendo...');
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Solicitud Creada',
+            detail: 'Su solicitud académica se ha radicado exitosamente.',
+            life: 3000
+          });
           setTimeout(() => {
-            this.router.navigate(['/solicitudes']);
-          }, 2000);
+            this.router.navigate(['/inicio']);
+          }, 1500);
         },
         error: (error) => {
           this.isLoading.set(false);
-          this.result.set(
-            error.error?.mensaje || 'Error al crear la solicitud. Por favor intenta nuevamente.',
-          );
+          const errorMsg = error.error?.mensaje || 'Error al crear la solicitud. Por favor intenta nuevamente.';
+          this.result.set(errorMsg);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error al Radicar',
+            detail: errorMsg,
+            life: 4000
+          });
         },
       });
   }

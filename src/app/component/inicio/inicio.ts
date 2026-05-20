@@ -7,13 +7,13 @@ import { UsuarioDetalleResponse } from '../../modelos/usuarios';
 import { SolicitudResumenResponse } from '../../modelos/solicitudes';
 import { Navbar } from '../navbar/navbar';
 
-// ✨ IMPORTS DE PRIMENG
-import { CardModule } from 'primeng/card';
-import { ButtonModule } from 'primeng/button';
+// PrimeNG v21 Standalone Components
+import { Card } from 'primeng/card';
+import { Button } from 'primeng/button';
 import { TableModule } from 'primeng/table';
-import { TagModule } from 'primeng/tag';
-import { SkeletonModule } from 'primeng/skeleton';
-import { TooltipModule } from 'primeng/tooltip';
+import { Tag } from 'primeng/tag';
+import { Skeleton } from 'primeng/skeleton';
+import { Tooltip } from 'primeng/tooltip';
 
 interface Estadisticas {
   total: number;
@@ -31,13 +31,12 @@ interface Estadisticas {
     CommonModule,
     RouterModule,
     Navbar,
-    // PrimeNG Modules
-    CardModule,
-    ButtonModule,
+    Card,
+    Button,
     TableModule,
-    TagModule,
-    SkeletonModule,
-    TooltipModule,
+    Tag,
+    Skeleton,
+    Tooltip,
   ],
   templateUrl: './inicio.html',
   styleUrl: './inicio.css',
@@ -183,5 +182,16 @@ export class Inicio implements OnInit {
       CERRADA: 'pi pi-lock',
     };
     return iconMap[estado] || 'pi pi-circle';
+  }
+
+  formatEstado(estado: string): string {
+    const estadosMap: { [key: string]: string } = {
+      REGISTRADA: 'Registrada',
+      CLASIFICADA: 'Clasificada',
+      EN_ATENCION: 'En Atención',
+      ATENDIDA: 'Atendida',
+      CERRADA: 'Cerrada',
+    };
+    return estadosMap[estado] || estado;
   }
 }

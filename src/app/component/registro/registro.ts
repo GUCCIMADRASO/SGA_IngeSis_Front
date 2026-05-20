@@ -1,5 +1,5 @@
-import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, DestroyRef, inject, signal, computed } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
   ReactiveFormsModule,
@@ -11,14 +11,16 @@ import { Router, RouterModule } from '@angular/router';
 import { UsuariosService } from '../../servicios/usuarios.service';
 import { RegistrarUsuarioRequest } from '../../modelos/usuarios';
 
-// ✨ IMPORTS DE PRIMENG
-import { CardModule } from 'primeng/card';
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import { MessageModule } from 'primeng/message';
-import { SelectModule } from 'primeng/select';
-import { PasswordModule } from 'primeng/password';
-import { DividerModule } from 'primeng/divider';
+// PrimeNG v21 Standalone Components
+import { Card } from 'primeng/card';
+import { InputText } from 'primeng/inputtext';
+import { Button } from 'primeng/button';
+import { Message } from 'primeng/message';
+import { Select } from 'primeng/select';
+import { Password } from 'primeng/password';
+import { Divider } from 'primeng/divider';
+import { IftaLabel } from 'primeng/iftalabel';
+import { Fluid } from 'primeng/fluid';
 
 @Component({
   selector: 'app-registro',
@@ -26,14 +28,15 @@ import { DividerModule } from 'primeng/divider';
   imports: [
     ReactiveFormsModule,
     RouterModule,
-    // PrimeNG Modules
-    CardModule,
-    InputTextModule,
-    ButtonModule,
-    MessageModule,
-    SelectModule,
-    PasswordModule,
-    DividerModule,
+    Card,
+    InputText,
+    Button,
+    Message,
+    Select,
+    Password,
+    Divider,
+    IftaLabel,
+    Fluid,
   ],
   templateUrl: './registro.html',
   styleUrl: './registro.css',
@@ -103,6 +106,12 @@ export class Registro {
     },
   );
 
+  // Convert Form Status Observable to Signal (Guía 15/17)
+  private formStatus = toSignal(this.registroForm.statusChanges, { initialValue: 'INVALID' as const });
+
+  // Computed Signal to determine submit state (Guía 15/17)
+  canSubmit = computed(() => this.formStatus() === 'VALID' && !this.isLoading());
+
   // Validador personalizado para comparar contraseñas
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {
     const password = control.get('password');
@@ -127,7 +136,7 @@ export class Registro {
   }
 
   onSubmit(): void {
-    if (this.registroForm.invalid) {
+    if (!this.canSubmit()) {
       // Marcar todos los campos como touched para mostrar errores
       Object.keys(this.registroForm.controls).forEach((key) => {
         this.registroForm.get(key)?.markAsTouched();

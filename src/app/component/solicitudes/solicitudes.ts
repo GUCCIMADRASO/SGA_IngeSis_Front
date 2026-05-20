@@ -7,14 +7,14 @@ import { SolicitudResumenResponse } from '../../modelos/solicitudes';
 import { Navbar } from '../navbar/navbar';
 
 // ✨ IMPORTS DE PRIMENG
-import { CardModule } from 'primeng/card';
-import { ButtonModule } from 'primeng/button';
+import { Card } from 'primeng/card';
+import { Button } from 'primeng/button';
 import { TableModule, TableLazyLoadEvent } from 'primeng/table';
-import { TagModule } from 'primeng/tag';
-import { InputTextModule } from 'primeng/inputtext';
-import { SelectModule } from 'primeng/select';
-import { TooltipModule } from 'primeng/tooltip';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { Tag } from 'primeng/tag';
+import { InputText } from 'primeng/inputtext';
+import { Select } from 'primeng/select';
+import { Tooltip } from 'primeng/tooltip';
+import { SharedModule } from 'primeng/api';
 
 interface SelectOption {
   label: string;
@@ -29,15 +29,15 @@ interface SelectOption {
     FormsModule,
     RouterModule,
     Navbar,
-    // PrimeNG Modules
-    CardModule,
-    ButtonModule,
+    // PrimeNG Components
+    Card,
+    Button,
     TableModule,
-    TagModule,
-    InputTextModule,
-    SelectModule,
-    TooltipModule,
-    ProgressSpinnerModule,
+    Tag,
+    InputText,
+    Select,
+    Tooltip,
+    SharedModule,
   ],
   templateUrl: './solicitudes.html',
   styleUrl: './solicitudes.css',
@@ -60,6 +60,7 @@ export class Solicitudes implements OnInit {
   filtroPrioridad: string | null = null;
 
   private busquedaTimeout: any;
+  private initialLazyLoadBypassed = false;
 
   // Opciones de filtros
   estadosOptions: SelectOption[] = [
@@ -85,8 +86,9 @@ export class Solicitudes implements OnInit {
   ];
 
   ngOnInit(): void {
-    // La tabla con [lazy]="true" ya emite onLazyLoad al inicializarse, 
-    // por lo que no es necesario llamar a cargarSolicitudes() aquí.
+    // Carga inicial para asegurar que funcione con navegación de historial (back/forward)
+    this.cargarSolicitudes();
+    this.initialLazyLoadBypassed = true;
   }
 
   cargarSolicitudes(): void {
@@ -147,8 +149,17 @@ export class Solicitudes implements OnInit {
   }
 
   onPageChange(event: TableLazyLoadEvent): void {
-    this.page.set(event.first! / event.rows!);
-    this.rows.set(event.rows!);
+    const newPage = event.first! / event.rows!;
+    const newRows = event.rows!;
+
+    // Si coincide con la carga inicial ya realizada por ngOnInit, evitamos la petición duplicada
+    if (newPage === this.page() && newRows === this.rows() && this.initialLazyLoadBypassed) {
+      return;
+    }
+
+    this.page.set(newPage);
+    this.rows.set(newRows);
+    this.initialLazyLoadBypassed = true;
     this.cargarSolicitudes();
   }
 

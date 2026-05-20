@@ -1,424 +1,497 @@
-/* ===== WRAPPER ===== */
+/* ===== WRAPPER & CONTAINER ===== */
 .inicio-wrapper {
   min-height: 100vh;
-  background: var(--surface-50);
+  background-color: #f8fafc; /* Slate 50 - Very clean and premium */
 }
 
 .inicio-container {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2.5rem 1.5rem;
 }
 
-/* ===== WELCOME SECTION ===== */
-.welcome-section {
+/* ===== WELCOME HERO SECTION ===== */
+.welcome-hero-section {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2.5rem;
-  padding: 2rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
-  animation: fadeInDown 0.6s ease-out;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.welcome-content {
-  flex: 1;
-}
-
-.welcome-title {
+.hero-left {
   display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin: 0 0 0.5rem 0;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-direction: column;
+  gap: 0.375rem;
 }
 
-.welcome-title i {
-  font-size: 2.5rem;
+.hero-greeting {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #0f172a; /* Slate 900 */
+  letter-spacing: -0.03em;
+  margin: 0;
 }
 
-.welcome-subtitle {
+.user-highlight {
+  color: #4f46e5; /* Premium Violet/Indigo */
+  background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-date {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  color: #64748b; /* Slate 500 */
   margin: 0;
   font-weight: 500;
 }
 
-.welcome-subtitle i {
-  font-size: 1.1rem;
+.hero-date i {
+  color: #94a3b8;
 }
 
-.welcome-actions {
-  display: flex;
-  gap: 1rem;
+/* PrimeNG Button custom for New Request */
+::ng-deep .new-sol-btn.p-button {
+  background: #0f172a !important; /* Flat dark button */
+  border: 1px solid #0f172a !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  padding: 0.75rem 1.25rem !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+  font-size: 0.95rem !important;
+}
+
+::ng-deep .new-sol-btn.p-button:hover {
+  background: #1e293b !important;
+  border-color: #1e293b !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08) !important;
 }
 
 /* ===== STATS GRID ===== */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2.5rem;
-  animation: fadeInUp 0.6s ease-out 0.1s both;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 3rem;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Overriding p-card inside stats */
+::ng-deep .stat-card.p-card {
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02) !important;
+  overflow: hidden !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-::ng-deep .stat-card {
-  border-radius: 12px;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  border: none;
+::ng-deep .stat-card.p-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.04) !important;
 }
 
-::ng-deep .stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+::ng-deep .stat-card.p-card .p-card-body {
+  padding: 1.5rem !important;
 }
 
-::ng-deep .stat-card .p-card-header {
-  padding: 0;
-  border: none;
+/* Accent borders for stats */
+::ng-deep .stat-card.stat-total {
+  border-left: 4px solid #475569 !important;
+}
+::ng-deep .stat-card.stat-registradas {
+  border-left: 4px solid #3b82f6 !important;
+}
+::ng-deep .stat-card.stat-atencion {
+  border-left: 4px solid #f59e0b !important;
+}
+::ng-deep .stat-card.stat-cerradas {
+  border-left: 4px solid #10b981 !important;
 }
 
-.stat-header {
-  background: linear-gradient(135deg, var(--card-color-1, #667eea) 0%, var(--card-color-2, #764ba2) 100%);
-  padding: 1.25rem;
+.stat-inner {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 
-.stat-icon {
-  font-size: 2.5rem;
-  color: #ffffff;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-
-::ng-deep .stat-card .p-card-body {
-  padding: 1.5rem;
-}
-
-.stat-content {
-  text-align: center;
-}
-
-.stat-number {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--text-color);
-  margin: 0 0 0.5rem 0;
-  line-height: 1;
+.stat-info {
+  display: flex;
+  flex-direction: column;
 }
 
 .stat-label {
-  font-size: 0.95rem;
-  color: var(--text-color-secondary);
-  margin: 0;
-  font-weight: 500;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-/* Color variations for stat cards */
-::ng-deep .stat-primary .stat-header {
-  --card-color-1: #667eea;
-  --card-color-2: #764ba2;
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0.25rem 0 0 0;
+  line-height: 1;
 }
 
-::ng-deep .stat-info .stat-header {
-  --card-color-1: #3b82f6;
-  --card-color-2: #2563eb;
+.stat-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 8px;
+  font-size: 1.25rem;
 }
 
-::ng-deep .stat-warning .stat-header {
-  --card-color-1: #f59e0b;
-  --card-color-2: #d97706;
+/* Accent icon background/colors */
+.stat-icon-total {
+  background-color: #f1f5f9;
+  color: #475569;
 }
-
-::ng-deep .stat-success .stat-header {
-  --card-color-1: #10b981;
-  --card-color-2: #059669;
+.stat-icon-registradas {
+  background-color: #eff6ff;
+  color: #2563eb;
+}
+.stat-icon-atencion {
+  background-color: #fffbeb;
+  color: #d97706;
+}
+.stat-icon-cerradas {
+  background-color: #f0fdf4;
+  color: #166534;
 }
 
 /* ===== QUICK ACTIONS ===== */
 .quick-actions-section {
-  margin-bottom: 2.5rem;
-  animation: fadeInUp 0.6s ease-out 0.2s both;
+  margin-bottom: 3rem;
 }
 
 .section-title {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  color: var(--text-color);
-  margin: 0 0 1.5rem 0;
-}
-
-.section-title i {
-  color: var(--primary-color);
-  font-size: 1.75rem;
+  color: #0f172a;
+  margin: 0 0 1.25rem 0;
+  letter-spacing: -0.02em;
 }
 
 .quick-actions-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
 }
 
-::ng-deep .action-card {
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 2px solid transparent;
+::ng-deep .action-card.p-card {
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02) !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-::ng-deep .action-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  border-color: var(--primary-color);
+::ng-deep .action-card.p-card:hover {
+  transform: translateY(-3px);
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05) !important;
 }
 
-::ng-deep .action-card .p-card-body {
-  padding: 2rem;
+::ng-deep .action-card.p-card .p-card-body {
+  padding: 1.75rem !important;
 }
 
-.action-content {
-  text-align: center;
+.action-content-box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
 }
 
-.action-icon {
-  font-size: 3.5rem;
-  color: var(--primary-color);
-  margin-bottom: 1rem;
-  display: block;
+.action-icon-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 8px;
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.action-icon-new {
+  background-color: #e0e7ff;
+  color: #4f46e5;
+}
+
+.action-icon-list {
+  background-color: #e0f2fe;
+  color: #0284c7;
+}
+
+.action-icon-profile {
+  background-color: #f1f5f9;
+  color: #334155;
 }
 
 .action-title {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   font-weight: 600;
-  color: var(--text-color);
-  margin: 0 0 0.5rem 0;
+  color: #0f172a;
+  margin: 0 0 0.375rem 0;
 }
 
 .action-description {
-  font-size: 0.95rem;
-  color: var(--text-color-secondary);
+  font-size: 0.875rem;
+  color: #64748b;
   margin: 0;
+  line-height: 1.45;
 }
 
-/* ===== RECENT SECTION ===== */
+/* ===== RECENT SOLICITUDES SECTION ===== */
 .recent-section {
-  animation: fadeInUp 0.6s ease-out 0.3s both;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.02);
 }
 
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
-/* ===== TABLE ===== */
-::ng-deep .recent-table {
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+::ng-deep .view-all-btn.p-button {
+  border-color: #cbd5e1 !important;
+  color: #475569 !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  padding: 0.5rem 0.875rem !important;
+  border-radius: 6px !important;
+  transition: all 0.2s ease !important;
 }
 
-::ng-deep .recent-table .p-datatable-header {
-  background: var(--surface-0);
-  border: none;
-  padding: 1.5rem;
+::ng-deep .view-all-btn.p-button:hover {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  border-color: #94a3b8 !important;
+}
+
+/* ===== TABLE LAYOUT OVERRIDES ===== */
+::ng-deep .recent-table.p-datatable {
+  border: none !important;
+  box-shadow: none !important;
 }
 
 ::ng-deep .recent-table .p-datatable-thead > tr > th {
-  background: var(--surface-100);
-  color: var(--text-color);
-  font-weight: 600;
-  border: none;
-  padding: 1rem 1.25rem;
+  background-color: #f8fafc !important;
+  color: #475569 !important;
+  font-weight: 600 !important;
+  font-size: 0.85rem !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.875rem 1rem !important;
+  border-bottom: 1px solid #e2e8f0 !important;
 }
 
 ::ng-deep .recent-table .p-datatable-tbody > tr {
-  transition: all 0.2s ease;
+  background-color: #ffffff !important;
+  transition: background-color 0.15s ease !important;
 }
 
 ::ng-deep .recent-table .p-datatable-tbody > tr:hover {
-  background: var(--surface-50);
+  background-color: #f8fafc !important;
 }
 
 ::ng-deep .recent-table .p-datatable-tbody > tr > td {
-  border: none;
-  padding: 1rem 1.25rem;
+  padding: 1rem !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  color: #334155 !important;
+  font-size: 0.925rem !important;
 }
 
-.table-row-clickable {
-  cursor: pointer;
-}
-
+/* Table cells styling */
 .codigo-badge {
   display: inline-block;
-  padding: 0.375rem 0.75rem;
-  background: var(--primary-50);
-  color: var(--primary-700);
+  padding: 0.25rem 0.5rem;
+  background-color: #f1f5f9;
+  color: #334155;
   border-radius: 6px;
   font-weight: 600;
-  font-size: 0.875rem;
-  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  border: 1px solid #e2e8f0;
 }
 
 .tipo-cell {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  font-weight: 500;
+  color: #0f172a;
 }
 
 .tipo-cell i {
-  color: var(--primary-color);
-  font-size: 1.1rem;
+  color: #64748b;
+  font-size: 1rem;
 }
 
 .descripcion-text {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: var(--text-color-secondary);
+  color: #64748b;
 }
 
-/* ===== EMPTY STATE ===== */
-::ng-deep .empty-state-card {
-  border-radius: 12px;
-  border: 2px dashed var(--surface-300);
+/* Custom Tag Overrides inside Table */
+::ng-deep .status-tag.p-tag {
+  padding: 0.25rem 0.625rem !important;
+  font-size: 0.775rem !important;
+  font-weight: 600 !important;
+  border-radius: 9999px !important;
+  text-transform: uppercase !important;
+}
+
+::ng-deep .status-tag.p-tag-info {
+  background-color: #eff6ff !important;
+  color: #1d4ed8 !important;
+  border: 1px solid #dbeafe !important;
+}
+
+::ng-deep .status-tag.p-tag-success {
+  background-color: #f0fdf4 !important;
+  color: #15803d !important;
+  border: 1px solid #dcfce7 !important;
+}
+
+::ng-deep .status-tag.p-tag-warn {
+  background-color: #fffbeb !important;
+  color: #b45309 !important;
+  border: 1px solid #fef3c7 !important;
+}
+
+::ng-deep .status-tag.p-tag-secondary {
+  background-color: #f8fafc !important;
+  color: #475569 !important;
+  border: 1px solid #f1f5f9 !important;
+}
+
+::ng-deep .view-btn.p-button {
+  padding: 0.375rem !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  border-color: #e2e8f0 !important;
+  color: #64748b !important;
+  transition: all 0.2s ease !important;
+}
+
+::ng-deep .view-btn.p-button:hover {
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* ===== EMPTY STATE DESIGN ===== */
+::ng-deep .empty-state-card.p-card {
+  border: 2px dashed #cbd5e1 !important;
+  border-radius: 12px !important;
+  background-color: #f8fafc !important;
+  box-shadow: none !important;
 }
 
 .empty-state {
   text-align: center;
-  padding: 3rem 2rem;
+  padding: 3rem 1.5rem;
 }
 
 .empty-icon {
-  font-size: 5rem;
-  color: var(--surface-400);
-  margin-bottom: 1.5rem;
+  font-size: 4rem;
+  color: #94a3b8;
+  margin-bottom: 1.25rem;
   display: block;
 }
 
 .empty-title {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 600;
-  color: var(--text-color);
-  margin: 0 0 0.5rem 0;
+  color: #0f172a;
+  margin: 0 0 0.375rem 0;
 }
 
 .empty-description {
-  font-size: 1rem;
-  color: var(--text-color-secondary);
+  font-size: 0.9rem;
+  color: #64748b;
   margin: 0;
 }
 
-/* ===== LOADING ===== */
-.loading-table {
-  padding: 1.5rem;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+::ng-deep .action-primary-btn.p-button {
+  background-color: #0f172a !important;
+  border-color: #0f172a !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  padding: 0.625rem 1.25rem !important;
+  border-radius: 6px !important;
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 960px) {
-  .inicio-container {
-    padding: 1.5rem;
-  }
+/* ===== LOADING PLACEMENT ===== */
+.loading-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
 
-  .welcome-section {
+/* ===== RESPONSIVE GRID & HERO ===== */
+@media (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .welcome-hero-section {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1.5rem;
-    padding: 1.5rem;
+    gap: 1.25rem;
+    padding-bottom: 1.25rem;
   }
-
-  .welcome-title {
-    font-size: 1.75rem;
-  }
-
-  .welcome-title i {
-    font-size: 2rem;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
+  
+  .hero-greeting {
+    font-size: 1.85rem;
   }
 
   .quick-actions-grid {
     grid-template-columns: 1fr;
-  }
-
-  .section-header {
-    flex-direction: column;
-    align-items: flex-start;
     gap: 1rem;
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 576px) {
   .inicio-container {
-    padding: 1rem;
-  }
-
-  .welcome-section {
-    padding: 1.25rem;
-  }
-
-  .welcome-title {
-    font-size: 1.5rem;
-  }
-
-  .section-title {
-    font-size: 1.25rem;
+    padding: 1.5rem 1rem;
   }
 
   .stats-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
-  ::ng-deep .recent-table {
-    font-size: 0.875rem;
-  }
-
-  ::ng-deep .recent-table .p-datatable-thead > tr > th,
-  ::ng-deep .recent-table .p-datatable-tbody > tr > td {
-    padding: 0.75rem 1rem;
+  .recent-section {
+    padding: 1rem;
   }
 }

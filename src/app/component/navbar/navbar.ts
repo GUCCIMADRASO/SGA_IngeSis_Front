@@ -1,32 +1,34 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, SharedModule } from 'primeng/api';
 import { UsuariosService } from '../../servicios/usuarios.service';
+import { AuthService } from '../../servicios/auth.service';
 import { UsuarioDetalleResponse } from '../../modelos/usuarios';
 
-import { MenubarModule } from 'primeng/menubar';
-import { AvatarModule } from 'primeng/avatar';
-import { MenuModule } from 'primeng/menu';
-import { BadgeModule } from 'primeng/badge';
-import { SkeletonModule } from 'primeng/skeleton';
+import { Menubar } from 'primeng/menubar';
+import { Avatar } from 'primeng/avatar';
+import { Menu } from 'primeng/menu';
+import { Badge } from 'primeng/badge';
+import { Skeleton } from 'primeng/skeleton';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [
     RouterModule,
-    // PrimeNG Modules
-    MenubarModule,
-    AvatarModule,
-    MenuModule,
-    BadgeModule,
-    SkeletonModule,
+    Menubar,
+    Avatar,
+    Menu,
+    Badge,
+    Skeleton,
+    SharedModule,
   ],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css',
 })
 export class Navbar implements OnInit {
   private usuariosService = inject(UsuariosService);
+  private authService = inject(AuthService);
   private router = inject(Router);
 
   usuario = signal<UsuarioDetalleResponse | null>(null);
@@ -90,13 +92,8 @@ export class Navbar implements OnInit {
   }
 
   logout(): void {
-    // Eliminar token
-    localStorage.removeItem('auth_token');
-
-    // Limpiar datos del usuario
+    this.authService.logout();
     this.usuario.set(null);
-
-    // Redirigir al login
     this.router.navigate(['/login']);
   }
 

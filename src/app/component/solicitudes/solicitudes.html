@@ -3,44 +3,25 @@
   <app-navbar />
 
   <div class="solicitudes-container">
-    <!-- Header -->
-    <div class="page-header">
+    <!-- Header Minimalista -->
+    <div class="solicitudes-header">
       <div class="header-content">
-        <h1 class="page-title">
-          <i class="pi pi-list"></i>
-          Gestión de Solicitudes
-        </h1>
-        <p class="page-subtitle">
-          Administra y da seguimiento a todas las solicitudes académicas
-        </p>
-      </div>
-      <div class="header-actions">
-        <p-button
-          label="Nueva Solicitud"
-          icon="pi pi-plus-circle"
-          routerLink="/crear-solicitud"
-          severity="success"
-          size="large"
-        />
+        <h1 class="page-title">Gestión de Solicitudes</h1>
+        <p class="page-subtitle">Administre, filtre y realice el seguimiento a sus trámites académicos radicados.</p>
       </div>
     </div>
 
     <!-- Filtros y Búsqueda -->
     <p-card styleClass="filters-card">
-      <ng-template pTemplate="header">
-        <div class="filters-header">
-          <i class="pi pi-filter"></i>
-          <span>Filtros de Búsqueda</span>
-        </div>
-      </ng-template>
+      <div class="card-filters-title">
+        <i class="pi pi-filter"></i>
+        <span>Filtros de Búsqueda</span>
+      </div>
 
       <div class="filters-grid">
         <!-- Búsqueda por Código -->
         <div class="filter-field">
-          <label for="busqueda" class="filter-label">
-            <i class="pi pi-search"></i>
-            Buscar por Código
-          </label>
+          <label for="busqueda" class="filter-label">Buscar por Código</label>
           <input
             pInputText
             id="busqueda"
@@ -48,16 +29,13 @@
             [(ngModel)]="busqueda"
             placeholder="Ej: SOL-001"
             (input)="onBusquedaChange()"
-            styleClass="w-full"
+            class="w-full"
           />
         </div>
 
         <!-- Filtro por Estado -->
         <div class="filter-field">
-          <label for="filtroEstado" class="filter-label">
-            <i class="pi pi-tag"></i>
-            Estado
-          </label>
+          <label for="filtroEstado" class="filter-label">Estado</label>
           <p-select
             id="filtroEstado"
             [(ngModel)]="filtroEstado"
@@ -73,10 +51,7 @@
 
         <!-- Filtro por Tipo -->
         <div class="filter-field">
-          <label for="filtroTipo" class="filter-label">
-            <i class="pi pi-file"></i>
-            Tipo de Solicitud
-          </label>
+          <label for="filtroTipo" class="filter-label">Tipo de Solicitud</label>
           <p-select
             id="filtroTipo"
             [(ngModel)]="filtroTipo"
@@ -92,10 +67,7 @@
 
         <!-- Filtro por Prioridad -->
         <div class="filter-field">
-          <label for="filtroPrioridad" class="filter-label">
-            <i class="pi pi-exclamation-triangle"></i>
-            Prioridad
-          </label>
+          <label for="filtroPrioridad" class="filter-label">Prioridad</label>
           <p-select
             id="filtroPrioridad"
             [(ngModel)]="filtroPrioridad"
@@ -110,7 +82,8 @@
         </div>
       </div>
 
-      <ng-template pTemplate="footer">
+      <!-- Acciones de Filtros -->
+      @if (hayFiltrosActivos()) {
         <div class="filters-actions">
           <p-button
             label="Limpiar Filtros"
@@ -118,14 +91,10 @@
             severity="secondary"
             [outlined]="true"
             (onClick)="limpiarFiltros()"
-          />
-          <p-button
-            label="Aplicar Filtros"
-            icon="pi pi-check"
-            (onClick)="aplicarFiltros()"
+            styleClass="clear-btn"
           />
         </div>
-      </ng-template>
+      }
     </p-card>
 
     <!-- Resultados y Tabla -->
@@ -135,11 +104,7 @@
         <div class="results-info">
           <i class="pi pi-inbox"></i>
           <span>
-            Mostrando 
-            <strong>{{ solicitudes().length }}</strong> 
-            de 
-            <strong>{{ totalRecords() }}</strong> 
-            solicitudes
+            Mostrando <strong>{{ solicitudes().length }}</strong> de <strong>{{ totalRecords() }}</strong> solicitudes
           </span>
         </div>
         <div class="results-actions">
@@ -151,6 +116,7 @@
             (onClick)="recargarSolicitudes()"
             pTooltip="Recargar"
             tooltipPosition="top"
+            styleClass="refresh-btn"
           />
         </div>
       </div>
@@ -159,31 +125,27 @@
       @if (solicitudes().length === 0 && !loading()) {
         <p-card styleClass="empty-state-card">
           <div class="empty-state">
-            <i class="pi pi-inbox empty-icon"></i>
+            <i class="pi pi-folder-open empty-icon"></i>
             <h3 class="empty-title">No se encontraron solicitudes</h3>
             <p class="empty-description">
               @if (hayFiltrosActivos()) {
-                No hay solicitudes que coincidan con los filtros seleccionados
+                No hay registros que coincidan con los filtros de búsqueda establecidos.
               } @else {
-                Aún no has creado ninguna solicitud
+                Aún no cuenta con solicitudes académicas radicadas en el sistema.
               }
             </p>
-            <div class="empty-actions">
-              @if (hayFiltrosActivos()) {
+            @if (hayFiltrosActivos()) {
+              <div class="empty-actions">
                 <p-button
                   label="Limpiar Filtros"
                   icon="pi pi-times"
                   severity="secondary"
                   [outlined]="true"
                   (onClick)="limpiarFiltros()"
+                  styleClass="clear-btn"
                 />
-              }
-              <p-button
-                label="Crear Solicitud"
-                icon="pi pi-plus"
-                routerLink="/crear-solicitud"
-              />
-            </div>
+              </div>
+            }
           </div>
         </p-card>
       }
@@ -206,20 +168,11 @@
         >
           <ng-template pTemplate="header">
             <tr>
-              <th pSortableColumn="codigo" style="width: 120px">
-                Código
-                <p-sortIcon field="codigo" />
-              </th>
-              <th pSortableColumn="tipo" style="width: 200px">
-                Tipo
-                <p-sortIcon field="tipo" />
-              </th>
+              <th style="width: 130px">Código</th>
+              <th style="width: 240px">Tipo de Trámite</th>
               <th>Descripción</th>
-              <th pSortableColumn="estado" style="width: 150px">
-                Estado
-                <p-sortIcon field="estado" />
-              </th>
-              <th style="width: 140px">Acciones</th>
+              <th style="width: 160px">Estado</th>
+              <th style="width: 100px; text-align: center;">Acción</th>
             </tr>
           </ng-template>
 
@@ -242,21 +195,21 @@
                   [value]="formatEstado(solicitud.estado)"
                   [severity]="getEstadoSeverity(solicitud.estado)"
                   [icon]="getEstadoIcon(solicitud.estado)"
+                  styleClass="status-tag"
                 />
               </td>
-              <td>
-                <div class="action-buttons">
-                  <p-button
-                    icon="pi pi-eye"
-                    [rounded]="true"
-                    [outlined]="true"
-                    severity="info"
-                    size="small"
-                    (onClick)="verDetalle(solicitud.codigo); $event.stopPropagation()"
-                    pTooltip="Ver Detalle"
-                    tooltipPosition="top"
-                  />
-                </div>
+              <td style="text-align: center;">
+                <p-button
+                  icon="pi pi-eye"
+                  [rounded]="true"
+                  [outlined]="true"
+                  severity="secondary"
+                  size="small"
+                  (onClick)="verDetalle(solicitud.codigo); $event.stopPropagation()"
+                  pTooltip="Ver Detalle"
+                  tooltipPosition="top"
+                  styleClass="action-view-btn"
+                />
               </td>
             </tr>
           </ng-template>

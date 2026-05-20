@@ -3,24 +3,19 @@
   <app-navbar />
 
   <div class="crear-solicitud-container">
-    <!-- Header -->
-    <div class="page-header">
+    <!-- Header Minimalista -->
+    <div class="crear-solicitud-header">
       <div class="header-content">
-        <h1 class="page-title">
-          <i class="pi pi-plus-circle"></i>
-          Nueva Solicitud Académica
-        </h1>
-        <p class="page-subtitle">
-          Complete el formulario para crear una nueva solicitud
-        </p>
+        <h1 class="page-title">Nueva Solicitud Académica</h1>
+        <p class="page-subtitle">Complete los campos del formulario para radicar su trámite académico en el sistema.</p>
       </div>
       <div class="header-actions">
         <p-button
-          label="Cancelar"
-          icon="pi pi-times"
+          label="Volver"
+          icon="pi pi-arrow-left"
           severity="secondary"
           [outlined]="true"
-          routerLink="/solicitudes"
+          routerLink="/inicio"
         />
       </div>
     </div>
@@ -28,7 +23,7 @@
     <!-- Tarjeta de Solicitante (Info automática) -->
     <div class="solicitante-card">
       <div class="solicitante-card-icon">
-        <i class="pi pi-user-circle"></i>
+        <i class="pi pi-user"></i>
       </div>
       <div class="solicitante-card-info">
         @if (cargandoPerfil()) {
@@ -43,18 +38,16 @@
       </div>
       <div class="solicitante-badge">
         <i class="pi pi-shield"></i>
-        Solicitante verificado
+        <span>Usuario Verificado</span>
       </div>
     </div>
 
     <!-- Formulario Principal -->
     <p-card styleClass="form-card">
-      <ng-template pTemplate="header">
-        <div class="card-header-content">
-          <i class="pi pi-file-edit"></i>
-          <span>Información de la Solicitud</span>
-        </div>
-      </ng-template>
+      <div class="card-form-title">
+        <i class="pi pi-file-edit"></i>
+        <span>Información del Trámite</span>
+      </div>
 
       <form [formGroup]="solicitudForm" (ngSubmit)="onSubmit()">
         <div class="form-grid">
@@ -62,7 +55,6 @@
           <!-- Tipo de Solicitud -->
           <div class="form-field form-field-full">
             <label for="tipo" class="field-label">
-              <i class="pi pi-bookmark"></i>
               Tipo de Solicitud
               <span class="required">*</span>
             </label>
@@ -97,7 +89,6 @@
           <!-- Descripción -->
           <div class="form-field form-field-full">
             <label for="descripcion" class="field-label">
-              <i class="pi pi-align-left"></i>
               Descripción Detallada
               <span class="required">*</span>
             </label>
@@ -105,8 +96,8 @@
               pInputTextarea
               id="descripcion"
               formControlName="descripcion"
-              [rows]="8"
-              placeholder="Describa detalladamente su solicitud. Incluya toda la información relevante que permita procesar su petición de manera efectiva..."
+              [rows]="6"
+              placeholder="Describa detalladamente su solicitud. Por favor proporcione la información clara y completa para agilizar su respuesta..."
               [class.ng-invalid]="solicitudForm.get('descripcion')?.invalid && solicitudForm.get('descripcion')?.touched"
               [autoResize]="true"
             ></textarea>
@@ -174,7 +165,7 @@
             icon="pi pi-times"
             severity="secondary"
             [outlined]="true"
-            routerLink="/solicitudes"
+            routerLink="/inicio"
             styleClass="cancel-button"
           />
           <p-button
@@ -188,46 +179,55 @@
         </div>
       </form>
 
-      <ng-template pTemplate="footer">
-        <div class="card-footer-info">
-          <i class="pi pi-info-circle"></i>
-          <span>
-            Los campos marcados con
-            <span class="required">*</span>
-            son obligatorios. Una vez enviada, recibirá un código de seguimiento para su solicitud.
-          </span>
-        </div>
-      </ng-template>
+      <!-- Nota al Pie del Formulario -->
+      <div class="card-footer-info">
+        <i class="pi pi-info-circle"></i>
+        <span>
+          Los campos marcados con <span class="required">*</span> son obligatorios. Al radicar la solicitud, podrá consultar su estado en tiempo real en la bandeja de trámites.
+        </span>
+      </div>
     </p-card>
 
     <!-- Información Adicional -->
     <div class="info-section">
       <h3 class="info-title">
         <i class="pi pi-question-circle"></i>
-        Información Importante
+        Información de Interés
       </h3>
       <div class="info-cards-grid">
         <p-card styleClass="info-card">
           <div class="info-card-content">
-            <i class="pi pi-clock info-icon"></i>
-            <h4>Tiempo de Respuesta</h4>
-            <p>Las solicitudes son procesadas en un plazo de 3 a 5 días hábiles</p>
+            <div class="info-card-header-icon">
+              <i class="pi pi-clock info-icon"></i>
+            </div>
+            <div class="info-card-text">
+              <h4>Tiempo de Respuesta</h4>
+              <p>Las solicitudes académicas se responden en un promedio de 3 a 5 días hábiles por la secretaría académica.</p>
+            </div>
           </div>
         </p-card>
 
         <p-card styleClass="info-card">
           <div class="info-card-content">
-            <i class="pi pi-bell info-icon"></i>
-            <h4>Seguimiento</h4>
-            <p>Puedes consultar el estado de tu solicitud en la sección "Mis Solicitudes"</p>
+            <div class="info-card-header-icon">
+              <i class="pi pi-bell info-icon"></i>
+            </div>
+            <div class="info-card-text">
+              <h4>Notificaciones</h4>
+              <p>El sistema actualizará el estado de la solicitud en tu panel. Recibirás respuesta por este mismo medio.</p>
+            </div>
           </div>
         </p-card>
 
         <p-card styleClass="info-card">
           <div class="info-card-content">
-            <i class="pi pi-book info-icon"></i>
-            <h4>Historial</h4>
-            <p>Todas tus solicitudes quedan registradas con un código de seguimiento único</p>
+            <div class="info-card-header-icon">
+              <i class="pi pi-book info-icon"></i>
+            </div>
+            <div class="info-card-text">
+              <h4>Historial Completo</h4>
+              <p>Toda radicación genera un registro inmutable. Podrás revisar el histórico y comentarios cuando lo requieras.</p>
+            </div>
           </div>
         </p-card>
       </div>

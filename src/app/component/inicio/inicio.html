@@ -1,102 +1,97 @@
 <div class="inicio-wrapper">
-  <!-- Incluir Navbar -->
+  <!-- Navbar Principal -->
   <app-navbar />
 
   <div class="inicio-container">
-    <!-- Header de Bienvenida -->
-    <div class="welcome-section">
-      <div class="welcome-content">
-        <h1 class="welcome-title">
-          <i class="pi pi-home"></i>
-          Bienvenido, {{ usuario()?.nombre || 'Usuario' }}
+    <!-- Header de Bienvenida (Hero Layout) -->
+    <div class="welcome-hero-section">
+      <div class="hero-left">
+        <h1 class="hero-greeting">
+          Bienvenido, <span class="user-highlight">{{ usuario()?.nombre || 'Usuario' }}</span>
         </h1>
-        <p class="welcome-subtitle">
+        <p class="hero-date">
           <i class="pi pi-calendar"></i>
           {{ fechaActual }}
         </p>
       </div>
-      <div class="welcome-actions">
+      <div class="hero-right">
         <p-button
           label="Nueva Solicitud"
-          icon="pi pi-plus-circle"
+          icon="pi pi-plus"
           routerLink="/crear-solicitud"
-          severity="success"
-          size="large"
+          severity="primary"
+          styleClass="new-sol-btn"
         />
       </div>
     </div>
 
-    <!-- Tarjetas de Estadísticas -->
+    <!-- Tarjetas de Estadísticas Minimalistas -->
     <div class="stats-grid">
       <!-- Total de Solicitudes -->
-      <p-card styleClass="stat-card stat-primary">
-        <ng-template pTemplate="header">
-          <div class="stat-header">
-            <i class="pi pi-file stat-icon"></i>
+      <p-card styleClass="stat-card stat-total">
+        <div class="stat-inner">
+          <div class="stat-info">
+            <span class="stat-label">Total de Solicitudes</span>
+            @if (loadingStats()) {
+              <p-skeleton width="3rem" height="2rem" styleClass="my-1" />
+            } @else {
+              <h2 class="stat-number">{{ estadisticas().total || 0 }}</h2>
+            }
           </div>
-        </ng-template>
-        <div class="stat-content">
-          @if (loadingStats()) {
-            <p-skeleton width="4rem" height="2.5rem" styleClass="mb-2" />
-            <p-skeleton width="8rem" height="1rem" />
-          } @else {
-            <h2 class="stat-number">{{ estadisticas().total || 0 }}</h2>
-            <p class="stat-label">Total de Solicitudes</p>
-          }
+          <div class="stat-icon-wrapper stat-icon-total">
+            <i class="pi pi-file"></i>
+          </div>
         </div>
       </p-card>
 
       <!-- Solicitudes Registradas -->
-      <p-card styleClass="stat-card stat-info">
-        <ng-template pTemplate="header">
-          <div class="stat-header">
-            <i class="pi pi-inbox stat-icon"></i>
+      <p-card styleClass="stat-card stat-registradas">
+        <div class="stat-inner">
+          <div class="stat-info">
+            <span class="stat-label">Registradas</span>
+            @if (loadingStats()) {
+              <p-skeleton width="3rem" height="2rem" styleClass="my-1" />
+            } @else {
+              <h2 class="stat-number">{{ estadisticas().registradas || 0 }}</h2>
+            }
           </div>
-        </ng-template>
-        <div class="stat-content">
-          @if (loadingStats()) {
-            <p-skeleton width="4rem" height="2.5rem" styleClass="mb-2" />
-            <p-skeleton width="8rem" height="1rem" />
-          } @else {
-            <h2 class="stat-number">{{ estadisticas().registradas || 0 }}</h2>
-            <p class="stat-label">Registradas</p>
-          }
+          <div class="stat-icon-wrapper stat-icon-registradas">
+            <i class="pi pi-inbox"></i>
+          </div>
         </div>
       </p-card>
 
       <!-- Solicitudes en Atención -->
-      <p-card styleClass="stat-card stat-warning">
-        <ng-template pTemplate="header">
-          <div class="stat-header">
-            <i class="pi pi-clock stat-icon"></i>
+      <p-card styleClass="stat-card stat-atencion">
+        <div class="stat-inner">
+          <div class="stat-info">
+            <span class="stat-label">En Atención</span>
+            @if (loadingStats()) {
+              <p-skeleton width="3rem" height="2rem" styleClass="my-1" />
+            } @else {
+              <h2 class="stat-number">{{ estadisticas().enAtencion || 0 }}</h2>
+            }
           </div>
-        </ng-template>
-        <div class="stat-content">
-          @if (loadingStats()) {
-            <p-skeleton width="4rem" height="2.5rem" styleClass="mb-2" />
-            <p-skeleton width="8rem" height="1rem" />
-          } @else {
-            <h2 class="stat-number">{{ estadisticas().enAtencion || 0 }}</h2>
-            <p class="stat-label">En Atención</p>
-          }
+          <div class="stat-icon-wrapper stat-icon-atencion">
+            <i class="pi pi-clock"></i>
+          </div>
         </div>
       </p-card>
 
       <!-- Solicitudes Cerradas -->
-      <p-card styleClass="stat-card stat-success">
-        <ng-template pTemplate="header">
-          <div class="stat-header">
-            <i class="pi pi-check-circle stat-icon"></i>
+      <p-card styleClass="stat-card stat-cerradas">
+        <div class="stat-inner">
+          <div class="stat-info">
+            <span class="stat-label">Cerradas</span>
+            @if (loadingStats()) {
+              <p-skeleton width="3rem" height="2rem" styleClass="my-1" />
+            } @else {
+              <h2 class="stat-number">{{ estadisticas().cerradas || 0 }}</h2>
+            }
           </div>
-        </ng-template>
-        <div class="stat-content">
-          @if (loadingStats()) {
-            <p-skeleton width="4rem" height="2.5rem" styleClass="mb-2" />
-            <p-skeleton width="8rem" height="1rem" />
-          } @else {
-            <h2 class="stat-number">{{ estadisticas().cerradas || 0 }}</h2>
-            <p class="stat-label">Cerradas</p>
-          }
+          <div class="stat-icon-wrapper stat-icon-cerradas">
+            <i class="pi pi-check-circle"></i>
+          </div>
         </div>
       </p-card>
     </div>
@@ -104,31 +99,36 @@
     <!-- Acciones Rápidas -->
     <div class="quick-actions-section">
       <h2 class="section-title">
-        <i class="pi pi-bolt"></i>
         Acciones Rápidas
       </h2>
       <div class="quick-actions-grid">
         <p-card styleClass="action-card" (click)="irACrearSolicitud()">
-          <div class="action-content">
-            <i class="pi pi-plus-circle action-icon"></i>
+          <div class="action-content-box">
+            <div class="action-icon-circle action-icon-new">
+              <i class="pi pi-plus-circle"></i>
+            </div>
             <h3 class="action-title">Nueva Solicitud</h3>
-            <p class="action-description">Crea una nueva solicitud académica</p>
+            <p class="action-description">Crea una nueva solicitud académica en el sistema</p>
           </div>
         </p-card>
 
         <p-card styleClass="action-card" (click)="irASolicitudes()">
-          <div class="action-content">
-            <i class="pi pi-list action-icon"></i>
+          <div class="action-content-box">
+            <div class="action-icon-circle action-icon-list">
+              <i class="pi pi-list"></i>
+            </div>
             <h3 class="action-title">Ver Solicitudes</h3>
-            <p class="action-description">Consulta todas tus solicitudes</p>
+            <p class="action-description">Consulta el historial y estado de tus radicados</p>
           </div>
         </p-card>
 
         <p-card styleClass="action-card" (click)="irAPerfil()">
-          <div class="action-content">
-            <i class="pi pi-user action-icon"></i>
+          <div class="action-content-box">
+            <div class="action-icon-circle action-icon-profile">
+              <i class="pi pi-user"></i>
+            </div>
             <h3 class="action-title">Mi Perfil</h3>
-            <p class="action-description">Administra tu información personal</p>
+            <p class="action-description">Gestiona tus datos personales e institucionales</p>
           </div>
         </p-card>
       </div>
@@ -138,20 +138,21 @@
     <div class="recent-section">
       <div class="section-header">
         <h2 class="section-title">
-          <i class="pi pi-history"></i>
           Solicitudes Recientes
         </h2>
         <p-button
           label="Ver Todas"
           icon="pi pi-arrow-right"
+          iconPos="right"
           [outlined]="true"
           routerLink="/solicitudes"
+          styleClass="view-all-btn"
         />
       </div>
 
       @if (loadingSolicitudes()) {
         <div class="loading-table">
-          <p-skeleton width="100%" height="3rem" styleClass="mb-2" />
+          <p-skeleton width="100%" height="3.25rem" styleClass="mb-2" />
           <p-skeleton width="100%" height="3rem" styleClass="mb-2" />
           <p-skeleton width="100%" height="3rem" styleClass="mb-2" />
         </div>
@@ -160,12 +161,12 @@
           <div class="empty-state">
             <i class="pi pi-inbox empty-icon"></i>
             <h3 class="empty-title">No hay solicitudes recientes</h3>
-            <p class="empty-description">Crea tu primera solicitud para comenzar</p>
+            <p class="empty-description">Radica tu primera solicitud académica haciendo clic en el botón de abajo</p>
             <p-button
               label="Crear Solicitud"
               icon="pi pi-plus"
               routerLink="/crear-solicitud"
-              styleClass="mt-3"
+              styleClass="mt-3 action-primary-btn"
             />
           </div>
         </p-card>
@@ -179,10 +180,10 @@
           <ng-template pTemplate="header">
             <tr>
               <th>Código</th>
-              <th>Tipo</th>
-              <th>Descripción</th>
+              <th>Tipo de Trámite</th>
+              <th>Descripción Breve</th>
               <th>Estado</th>
-              <th style="width: 120px">Acciones</th>
+              <th style="width: 100px; text-align: center;">Acción</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-solicitud>
@@ -201,21 +202,23 @@
               </td>
               <td>
                 <p-tag
-                  [value]="solicitud.estado"
+                  [value]="formatEstado(solicitud.estado)"
                   [severity]="getEstadoSeverity(solicitud.estado)"
                   [icon]="getEstadoIcon(solicitud.estado)"
+                  styleClass="status-tag"
                 />
               </td>
-              <td>
+              <td style="text-align: center;">
                 <p-button
                   icon="pi pi-eye"
                   [rounded]="true"
                   [outlined]="true"
-                  severity="info"
+                  severity="secondary"
                   size="small"
                   (onClick)="verDetalle(solicitud.codigo); $event.stopPropagation()"
                   pTooltip="Ver Detalle"
                   tooltipPosition="top"
+                  styleClass="view-btn"
                 />
               </td>
             </tr>

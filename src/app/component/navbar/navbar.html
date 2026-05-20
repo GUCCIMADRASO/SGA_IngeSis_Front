@@ -28,7 +28,7 @@
           </div>
 
           <!-- Avatar con Menú -->
-          <div class="user-avatar-container">
+          <div class="user-avatar-container" #avatarContainer>
             <p-avatar
               [label]="getInitials(usuario()?.nombre!)"
               styleClass="user-avatar"
@@ -43,10 +43,10 @@
               [severity]="getRolSeverity(usuario()?.rol!)"
               styleClass="role-badge"
             />
-          </div>
 
-          <!-- Menú Overlay del Usuario -->
-          <p-menu #userMenu [model]="userMenuItems" [popup]="true" styleClass="user-menu" />
+            <!-- Menú Overlay del Usuario -->
+            <p-menu #userMenu [model]="userMenuItems" [popup]="true" styleClass="user-menu" [appendTo]="avatarContainer" />
+          </div>
         } @else {
           <!-- Loading State -->
           <div class="user-loading">

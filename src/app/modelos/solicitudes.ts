@@ -48,11 +48,9 @@ export interface SolicitudDetalleResponse {
 }
 
 export interface RegistroHistorialResponse {
-  id: number;
-  estadoAnterior?: string;
-  estadoNuevo: string;
-  fechaCambio: string;
-  observacion?: string;
+  descripcion: string;
+  fecha: string;
+  estadoAsociado: string;
 }
 
 export interface ClasificarSolicitudRequest {

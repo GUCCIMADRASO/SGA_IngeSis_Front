@@ -1,0 +1,24 @@
+<div class="unauthorized-wrapper">
+  <p-card styleClass="unauthorized-card">
+    <div class="unauthorized-content">
+      <div class="icon-container">
+        <i class="pi pi-lock-open locked-icon"></i>
+      </div>
+      
+      <h1 class="unauthorized-title">Acceso Denegado</h1>
+      <p class="unauthorized-description">
+        No tienes permisos suficientes para acceder a este apartado del sistema. 
+        Si crees que esto es un error, por favor contacta al administrador.
+      </p>
+
+      <div class="actions-container">
+        <p-button 
+          label="Volver al Inicio" 
+          icon="pi pi-home" 
+          (click)="volverAlInicio()"
+          styleClass="action-btn"
+        />
+      </div>
+    </div>
+  </p-card>
+</div>

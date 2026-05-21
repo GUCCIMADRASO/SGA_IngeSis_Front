@@ -1,59 +1,75 @@
-# FrontProyecto
+# SGA_IngeSis Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.5.
+Frontend Angular para el sistema de gestión de solicitudes.
 
-## Development server
+Este proyecto provee la interfaz del cliente con rutas de autenticación, gestión de solicitudes, perfil de usuario y control de accesos mediante guards.
 
-To start a local development server, run:
+## Estructura principal
 
-```bash
-ng serve
-```
+- `src/app/app.ts` - Módulo principal y bootstrap de la aplicación.
+- `src/app/app.routes.ts` - Configuración de rutas de la aplicación.
+- `src/app/app.config.ts` - Configuración general de la app.
+- `src/app/component/` - Componentes reutilizables y páginas de la aplicación.
+  - `login` - inicio de sesión.
+  - `registro` - creación de cuentas.
+  - `inicio` - pantalla principal.
+  - `solicitudes` - listado de solicitudes.
+  - `detalle-solicitud` - vista de detalle de una solicitud.
+  - `crear-solicitud` - formulario para crear solicitudes.
+  - `perfil` - datos del usuario.
+  - `navbar` - menú de navegación.
+  - `unauthorized` - pantalla de acceso restringido.
+- `src/app/servicios/` - Servicios de datos y autenticación.
+- `src/app/modelos/` - Interfaces y modelos de datos.
+- `src/styles.css` - estilos globales.
+- `public/` - activos estáticos que se incluyen en el build.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Requisitos previos
 
-## Code scaffolding
+- Node.js compatible con `npm@11.9.0`.
+- Angular CLI 21.x (opcional, pero recomendado para comandos locales).
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Instalación
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Desde la carpeta del proyecto ejecuta:
 
 ```bash
-ng test
+npm install
 ```
 
-## Running end-to-end tests
+## Ejecutar en desarrollo
 
-For end-to-end (e2e) testing, run:
+Para iniciar el servidor local:
 
 ```bash
-ng e2e
+npm start
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Luego abre `http://localhost:4200/` en el navegador.
 
-## Additional Resources
+## Scripts disponibles
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- `npm start` - Inicia la aplicación con `ng serve` en modo desarrollo.
+- `npm run build` - Genera el build de producción en `dist/`.
+- `npm run watch` - Construye en modo watch para desarrollo.
+- `npm test` - Ejecuta pruebas unitarias.
+
+## Funcionalidades clave
+
+- Autenticación y autorización.
+- Rutas protegidas con guards (`auth.guard`, `public.guard`, `roles.guard`).
+- Interceptor para el manejo de tokens de acceso (`auth.interceptor`).
+- Gestión de solicitudes y usuarios mediante servicios dedicados.
+- UI basada en componentes estructurados por funcionalidad.
+
+## Notas
+
+- El proyecto usa Angular 21 y PrimeNG para componentes de interfaz.
+- Ajusta los endpoints del backend en `src/app/servicios/` según sea necesario.
+- Si agregas nuevas rutas o guards, recuerda actualizar `app.routes.ts`.
+
+## Recursos adicionales
+
+- Angular: https://angular.io/
+- Angular CLI: https://angular.io/cli
+- PrimeNG: https://www.primefaces.org/primeng/

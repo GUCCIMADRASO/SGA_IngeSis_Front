@@ -6,7 +6,7 @@ import { SolicitudesService } from '../../servicios/solicitudes.service';
 import { SolicitudResumenResponse } from '../../modelos/solicitudes';
 import { Navbar } from '../navbar/navbar';
 
-// ✨ IMPORTS DE PRIMENG
+// IMPORTS DE PRIMENG
 import { Card } from 'primeng/card';
 import { Button } from 'primeng/button';
 import { TableModule, TableLazyLoadEvent } from 'primeng/table';
@@ -86,7 +86,7 @@ export class Solicitudes implements OnInit {
   ];
 
   ngOnInit(): void {
-    // Carga inicial para asegurar que funcione con navegación de historial (back/forward)
+    // Carga inicial para asegurar que funcione con navegación de historial 
     this.cargarSolicitudes();
     this.initialLazyLoadBypassed = true;
   }

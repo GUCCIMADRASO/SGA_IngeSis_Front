@@ -111,7 +111,6 @@ export class Inicio implements OnInit {
     this.loadingStats.set(true);
 
     // Cargar todas las solicitudes para calcular estadísticas
-    // En un caso real, el backend debería proveer un endpoint de estadísticas
     this.solicitudesService.listarSolicitudesPaginadas(0, 1000).subscribe({
       next: (page) => {
         const solicitudes = page.content;

@@ -45,10 +45,10 @@ export class Login {
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  // Convert Form Status Observable to Signal (Guía 15/17)
+  // convertimos el form status a signal
   private formStatus = toSignal(this.loginForm.statusChanges, { initialValue: 'INVALID' as const });
 
-  // Computed Signal to determine submit state (Guía 15/17)
+  //computed signal para saber si podemos enviar el formulario
   canSubmit = computed(() => this.formStatus() === 'VALID' && !this.isLoading());
 
   onSubmit(): void {
@@ -63,10 +63,10 @@ export class Login {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
-          // 1. Guardamos el token en el navegador
+          // Guardamos el token en el navegador
           localStorage.setItem('auth_token', response.token);
 
-          // 2. Apagamos la carga
+          // Apagamos la carga
           this.isLoading.set(false);
 
           this.router.navigate(['/inicio']);

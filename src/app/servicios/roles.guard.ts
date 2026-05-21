@@ -4,9 +4,9 @@ import { AuthService } from './auth.service';
 
 /**
  * Protege rutas que requieren roles específicos.
- * 1. Si el usuario no está autenticado, redirige a /login.
- * 2. Si está autenticado pero no tiene los roles esperados, redirige a /unauthorized.
- * 3. Si tiene el rol esperado, permite el acceso.
+ * - Si el usuario no está autenticado, redirige a /login.
+ * - Si está autenticado pero no tiene los roles esperados, redirige a /unauthorized.
+ * - Si tiene el rol esperado, permite el acceso.
  */
 export const rolesGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);

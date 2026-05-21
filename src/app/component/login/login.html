@@ -1,18 +1,19 @@
 <div class="login-split-container">
-  <!-- Panel de Marca (Izquierda, visible solo en pantallas grandes) -->
+  <!-- Panel de Marca-->
   <div class="login-brand-panel">
     <div class="brand-panel-content">
       <div class="brand-badge">
         <i class="pi pi-shield"></i>
         <span>Universidad del Quindío</span>
       </div>
-      
+
       <div class="brand-main-text">
         <i class="pi pi-graduation-cap brand-logo"></i>
         <h1 class="brand-title">SGA</h1>
         <p class="brand-subtitle">Sistema de Gestión de Solicitudes Académicas</p>
         <p class="brand-description">
-          El canal oficial e institucional para la radicación, gestión y seguimiento en tiempo real de todos tus trámites y requerimientos académicos.
+          El canal oficial e institucional para la radicación, gestión y seguimiento en tiempo real de todos tus
+          trámites y requerimientos académicos.
         </p>
       </div>
 
@@ -33,13 +34,13 @@
         </div>
       </div>
     </div>
-    
+
     <div class="brand-panel-footer">
       <span>© 2026 Universidad del Quindío. Portal de Servicios Académicos.</span>
     </div>
   </div>
 
-  <!-- Panel del Formulario (Derecha) -->
+  <!-- Panel del Formulario -->
   <div class="login-form-panel">
     <div class="form-container">
       <p-card styleClass="login-card">
@@ -56,67 +57,50 @@
               <!-- Campo Email con IftaLabel -->
               <div class="form-field">
                 <p-iftalabel>
-                  <input
-                    pInputText
-                    id="email"
-                    type="email"
-                    formControlName="email"
-                    autocomplete="email"
-                    [class.ng-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
-                  />
+                  <input pInputText id="email" type="email" formControlName="email" autocomplete="email"
+                    [class.ng-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" />
                   <label for="email">Correo Institucional</label>
                 </p-iftalabel>
                 @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
-                  <small class="error-text">
-                    <i class="pi pi-exclamation-circle"></i>
-                    @if (loginForm.get('email')?.hasError('required')) {
-                      El correo electrónico es obligatorio
-                    } @else if (loginForm.get('email')?.hasError('email')) {
-                      Ingresa un correo electrónico válido
-                    }
-                  </small>
+                <small class="error-text">
+                  <i class="pi pi-exclamation-circle"></i>
+                  @if (loginForm.get('email')?.hasError('required')) {
+                  El correo electrónico es obligatorio
+                  } @else if (loginForm.get('email')?.hasError('email')) {
+                  Ingresa un correo electrónico válido
+                  }
+                </small>
                 }
               </div>
 
               <!-- Campo Contraseña con IftaLabel y Password component -->
               <div class="form-field">
                 <p-iftalabel>
-                  <p-password
-                    id="password"
-                    formControlName="password"
-                    [feedback]="false"
-                    [toggleMask]="true"
+                  <p-password id="password" formControlName="password" [feedback]="false" [toggleMask]="true"
                     styleClass="w-full"
-                    [class.ng-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-                  />
+                    [class.ng-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" />
                   <label for="password">Contraseña</label>
                 </p-iftalabel>
                 @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
-                  <small class="error-text">
-                    <i class="pi pi-exclamation-circle"></i>
-                    @if (loginForm.get('password')?.hasError('required')) {
-                      La contraseña es obligatoria
-                    } @else if (loginForm.get('password')?.hasError('minlength')) {
-                      La contraseña debe tener al menos 6 caracteres
-                    }
-                  </small>
+                <small class="error-text">
+                  <i class="pi pi-exclamation-circle"></i>
+                  @if (loginForm.get('password')?.hasError('required')) {
+                  La contraseña es obligatoria
+                  } @else if (loginForm.get('password')?.hasError('minlength')) {
+                  La contraseña debe tener al menos 6 caracteres
+                  }
+                </small>
                 }
               </div>
 
               <!-- Mensaje de error del servidor usando p-message -->
               @if (errorMessage()) {
-                <p-message severity="error" [text]="errorMessage()" styleClass="w-full mt-2" />
+              <p-message severity="error" [text]="errorMessage()" styleClass="w-full mt-2" />
               }
 
               <!-- Botón PrimeNG con loading state y severity -->
-              <p-button
-                type="submit"
-                label="{{ isLoading() ? 'Autenticando...' : 'Iniciar Sesión' }}"
-                severity="primary"
-                [disabled]="!canSubmit()"
-                [loading]="isLoading()"
-                styleClass="submit-btn"
-              />
+              <p-button type="submit" label="{{ isLoading() ? 'Autenticando...' : 'Iniciar Sesión' }}"
+                severity="primary" [disabled]="!canSubmit()" [loading]="isLoading()" styleClass="submit-btn" />
             </div>
           </p-fluid>
         </form>
@@ -131,4 +115,3 @@
     </div>
   </div>
 </div>
-

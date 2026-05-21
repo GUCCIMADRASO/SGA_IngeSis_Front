@@ -15,25 +15,25 @@ export const routes: Routes = [
   // Ruta por defecto y dashboard protegidas por autenticación
   { path: '', component: Inicio, canActivate: [authGuard] },
   { path: 'inicio', component: Inicio, canActivate: [authGuard] },
-  
-  // Rutas públicas de autenticación y registro (usuarios autenticados no pueden volver aquí)
+
+  // Rutas públicas de autenticación y registro 
   { path: 'registro', component: Registro, canActivate: [publicGuard] },
   { path: 'login', component: Login, canActivate: [publicGuard] },
-  
+
   // Rutas privadas protegidas por autenticación
   { path: 'perfil', component: Perfil, canActivate: [authGuard] },
   { path: 'solicitudes', component: Solicitudes, canActivate: [authGuard] },
-  
+
   // Ruta de creación restringida únicamente al rol ESTUDIANTE
-  { 
-    path: 'crear-solicitud', 
-    component: CrearSolicitud, 
+  {
+    path: 'crear-solicitud',
+    component: CrearSolicitud,
     canActivate: [authGuard, rolesGuard],
     data: { expectedRoles: ['ESTUDIANTE'] }
   },
-  
+
   { path: 'detalle-solicitud/:id', component: DetalleSolicitud, canActivate: [authGuard] },
-  
+
   // Ruta para acceso no autorizado y redirecciones
   { path: 'unauthorized', component: Unauthorized },
   { path: '**', pathMatch: 'full', redirectTo: '/' },

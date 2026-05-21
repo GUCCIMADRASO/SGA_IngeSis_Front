@@ -33,10 +33,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         }
       });
     }
-    
+
     return next(clonedReq).pipe(
       catchError(error => {
-        // Token expirado o inválido -> cerrar sesión y redirigir
+        // Token expirado o inválido, cierra sesión y redirige
         if (error.status === 401) {
           authService.logout();
           router.navigate(['/login']);
@@ -46,6 +46,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     );
   }
 
-  // Si no hay token o es ruta pública, la dejamos pasar normal
+  // Si no hay token o es ruta pública, deja pasar
   return next(req);
 };

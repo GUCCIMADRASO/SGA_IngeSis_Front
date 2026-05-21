@@ -93,7 +93,7 @@ export class Registro {
       numeroDocumento: ['', Validators.required],
       nombre: ['', Validators.required],
       email: ['', [
-        Validators.required, 
+        Validators.required,
         Validators.email,
         Validators.pattern(/^[a-zA-Z0-9._%+-]+@(uniquindio\.edu\.co|uqvirtual\.edu\.co)$/i)
       ]],
@@ -106,10 +106,10 @@ export class Registro {
     },
   );
 
-  // Convert Form Status Observable to Signal (Guía 15/17)
+  // convertimo el formulario a señal para usarlo en el ngIf
   private formStatus = toSignal(this.registroForm.statusChanges, { initialValue: 'INVALID' as const });
 
-  // Computed Signal to determine submit state (Guía 15/17)
+  // computed para saber si el formulario es valido y no esta cargando
   canSubmit = computed(() => this.formStatus() === 'VALID' && !this.isLoading());
 
   // Validador personalizado para comparar contraseñas

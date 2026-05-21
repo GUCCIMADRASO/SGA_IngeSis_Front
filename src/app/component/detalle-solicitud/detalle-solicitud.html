@@ -3,370 +3,299 @@
 <div class="detalle-wrapper">
   <div class="detalle-container">
     @if (cargando()) {
-      <p-card styleClass="loading-card">
-        <div class="loading-state">
-          <p-progressSpinner styleClass="custom-spinner" strokeWidth="3"></p-progressSpinner>
-          <p class="loading-text">Cargando detalles de la solicitud...</p>
-        </div>
-      </p-card>
+    <p-card styleClass="loading-card">
+      <div class="loading-state">
+        <p-progressSpinner styleClass="custom-spinner" strokeWidth="3"></p-progressSpinner>
+        <p class="loading-text">Cargando detalles de la solicitud...</p>
+      </div>
+    </p-card>
     } @else if (solicitud()) {
-      <!-- Header de la Solicitud (Minimalista) -->
-      <div class="detalle-header">
-        <div class="header-left">
-          <div class="tipo-badge">
-            <i [class]="getTipoIcon(solicitud()!.tipo)"></i>
-            <span>{{ formatTipo(solicitud()!.tipo) }}</span>
-          </div>
-          <h1 class="page-title">Solicitud {{ solicitud()!.codigo }}</h1>
-          <div class="metadata">
-            <span class="fecha">
-              <i class="pi pi-calendar"></i>
-              Radicado: {{ solicitud()!.fechaCreacion | date: 'dd/MM/yyyy HH:mm' }}
+    <!-- Header de la Solicitud -->
+    <div class="detalle-header">
+      <div class="header-left">
+        <div class="tipo-badge">
+          <i [class]="getTipoIcon(solicitud()!.tipo)"></i>
+          <span>{{ formatTipo(solicitud()!.tipo) }}</span>
+        </div>
+        <h1 class="page-title">Solicitud {{ solicitud()!.codigo }}</h1>
+        <div class="metadata">
+          <span class="fecha">
+            <i class="pi pi-calendar"></i>
+            Radicado: {{ solicitud()!.fechaCreacion | date: 'dd/MM/yyyy HH:mm' }}
+          </span>
+          <span class="solicitante">
+            <i class="pi pi-user"></i>
+            Solicitante: {{ solicitud()!.solicitante.nombre }}
+          </span>
+        </div>
+      </div>
+      <div class="header-right">
+        <p-tag [value]="formatEstado(solicitud()!.estado)" [severity]="getEstadoSeverity(solicitud()!.estado)"
+          [icon]="getEstadoIcon(solicitud()!.estado)" styleClass="estado-tag">
+        </p-tag>
+      </div>
+    </div>
+
+    <!-- Grid de Información -->
+    <div class="info-grid">
+      <!-- Descripción de la Solicitud -->
+      <p-card styleClass="descripcion-card info-card">
+        <div class="card-section-title">Descripción Detallada</div>
+        <p class="descripcion-texto">{{ solicitud()!.descripcion }}</p>
+      </p-card>
+
+      <!-- Información del Solicitante -->
+      <p-card styleClass="solicitante-card info-card">
+        <div class="card-section-title">Información del Solicitante</div>
+        <div class="info-rows-container">
+          <div class="info-row">
+            <span class="info-label">
+              <i class="pi pi-user-edit"></i>
+              Nombre Completo
             </span>
-            <span class="solicitante">
-              <i class="pi pi-user"></i>
-              Solicitante: {{ solicitud()!.solicitante.nombre }}
+            <span class="info-value">{{ solicitud()!.solicitante.nombre }}</span>
+          </div>
+          <p-divider></p-divider>
+          <div class="info-row">
+            <span class="info-label">
+              <i class="pi pi-id-card"></i>
+              Tipo de Documento
             </span>
+            <span class="info-value">{{ formatTipoDocumento(solicitud()!.solicitante.tipoDocumento) }}</span>
           </div>
-        </div>
-        <div class="header-right">
-          <p-tag 
-            [value]="formatEstado(solicitud()!.estado)" 
-            [severity]="getEstadoSeverity(solicitud()!.estado)"
-            [icon]="getEstadoIcon(solicitud()!.estado)"
-            styleClass="estado-tag">
-          </p-tag>
-        </div>
-      </div>
-
-      <!-- Grid de Información -->
-      <div class="info-grid">
-        <!-- Descripción de la Solicitud -->
-        <p-card styleClass="descripcion-card info-card">
-          <div class="card-section-title">Descripción Detallada</div>
-          <p class="descripcion-texto">{{ solicitud()!.descripcion }}</p>
-        </p-card>
-
-        <!-- Información del Solicitante -->
-        <p-card styleClass="solicitante-card info-card">
-          <div class="card-section-title">Información del Solicitante</div>
-          <div class="info-rows-container">
-            <div class="info-row">
-              <span class="info-label">
-                <i class="pi pi-user-edit"></i>
-                Nombre Completo
-              </span>
-              <span class="info-value">{{ solicitud()!.solicitante.nombre }}</span>
-            </div>
-            <p-divider></p-divider>
-            <div class="info-row">
-              <span class="info-label">
-                <i class="pi pi-id-card"></i>
-                Tipo de Documento
-              </span>
-              <span class="info-value">{{ formatTipoDocumento(solicitud()!.solicitante.tipoDocumento) }}</span>
-            </div>
-            <p-divider></p-divider>
-            <div class="info-row">
-              <span class="info-label">
-                <i class="pi pi-hashtag"></i>
-                Número de Documento
-              </span>
-              <span class="info-value">{{ solicitud()!.solicitante.numeroDocumento }}</span>
-            </div>
-          </div>
-        </p-card>
-
-        <!-- Detalles de la Solicitud -->
-        <p-card styleClass="detalles-card info-card">
-          <div class="card-section-title">Detalles de Radicación</div>
-          <div class="info-rows-container">
-            <div class="info-row">
-              <span class="info-label">
-                <i class="pi pi-bookmark"></i>
-                Tipo de Trámite
-              </span>
-              <span class="info-value">{{ formatTipo(solicitud()!.tipo) }}</span>
-            </div>
-            <p-divider></p-divider>
-            <div class="info-row">
-              <span class="info-label">
-                <i class="pi pi-flag"></i>
-                Estado de Gestión
-              </span>
-              <p-tag 
-                [value]="formatEstado(solicitud()!.estado)" 
-                [severity]="getEstadoSeverity(solicitud()!.estado)"
-                styleClass="status-pill">
-              </p-tag>
-            </div>
-            <p-divider></p-divider>
-            <div class="info-row">
-              <span class="info-label">
-                <i class="pi pi-calendar-plus"></i>
-                Fecha Radicación
-              </span>
-              <span class="info-value">
-                {{ solicitud()!.fechaCreacion | date: 'dd/MM/yyyy HH:mm' }}
-              </span>
-            </div>
-            @if (solicitud()!.responsable) {
-              <p-divider></p-divider>
-              <div class="info-row">
-                <span class="info-label">
-                  <i class="pi pi-briefcase"></i>
-                  Responsable Asignado
-                </span>
-                <span class="info-value">
-                  {{ solicitud()!.responsable!.nombre }}
-                </span>
-              </div>
-            }
-          </div>
-        </p-card>
-
-        <!-- Historial de la Solicitud (Línea de Tiempo) -->
-        <p-card styleClass="historial-card info-card">
-          <div class="card-section-title">Historial de Gestión</div>
-          
-          @if (historialLoading()) {
-            <div class="historial-loading">
-              <i class="pi pi-spin pi-spinner spinner-icon"></i>
-              <span>Cargando historial de cambios...</span>
-            </div>
-          } @else if (historial().length === 0) {
-            <p class="empty-historial">No hay registros de historial para esta solicitud.</p>
-          } @else {
-            <div class="timeline-container">
-              @for (registro of historial(); track $index) {
-                <div class="timeline-item">
-                  <div class="timeline-marker" [class]="registro.estadoAsociado.toLowerCase()">
-                    <i [class]="getEstadoIcon(registro.estadoAsociado)"></i>
-                  </div>
-                  <div class="timeline-content-box">
-                    <div class="timeline-header-row">
-                      <span class="timeline-state-badge" [class]="registro.estadoAsociado.toLowerCase()">
-                        {{ formatEstado(registro.estadoAsociado) }}
-                      </span>
-                      <span class="timeline-date">{{ registro.fecha | date: 'dd/MM/yyyy HH:mm' }}</span>
-                    </div>
-                    <p class="timeline-desc">{{ registro.descripcion }}</p>
-                  </div>
-                </div>
-              }
-            </div>
-          }
-        </p-card>
-      </div>
-
-      <!-- Barra de Acciones de Gestión -->
-      <div class="acciones-section">
-        <div class="acciones-container">
-          <p-button 
-            label="Volver a Solicitudes" 
-            icon="pi pi-arrow-left" 
-            severity="secondary"
-            [outlined]="true"
-            (onClick)="volver()"
-            styleClass="btn-back">
-          </p-button>
-
-          @if (solicitud()!.estado === 'REGISTRADA' && rolUsuario() === 'ADMINISTRATIVO') {
-            <p-button 
-              label="Clasificar y Asignar Solicitud" 
-              icon="pi pi-sitemap" 
-              severity="warn"
-              (onClick)="abrirModalAdmin()"
-              styleClass="btn-admin">
-            </p-button>
-          }
-
-          @if (solicitud()!.estado === 'EN_ATENCION' && (rolUsuario() === 'DOCENTE' || rolUsuario() === 'DIRECTIVO')) {
-            <p-button 
-              label="Atender Solicitud" 
-              icon="pi pi-check-circle" 
-              severity="success"
-              (onClick)="abrirModalDocente()"
-              styleClass="btn-docente">
-            </p-button>
-          }
-
-          @if (solicitud()!.estado === 'ATENDIDA' && rolUsuario() === 'ESTUDIANTE') {
-            <p-button 
-              label="Aceptar Solución" 
-              icon="pi pi-check" 
-              severity="success"
-              (onClick)="abrirModalEstudiante('CERRAR')"
-              styleClass="btn-estudiante-accept">
-            </p-button>
-
-            <p-button 
-              label="Solicitar Revisión" 
-              icon="pi pi-refresh" 
-              severity="danger"
-              (onClick)="abrirModalEstudiante('RECHAZAR')"
-              styleClass="btn-estudiante-reject">
-            </p-button>
-          }
-        </div>
-      </div>
-
-      <!-- Modal: Clasificar y Asignar (Administrativo) -->
-      <p-dialog 
-        header="Clasificar y Asignar Solicitud" 
-        [modal]="true" 
-        [(visible)]="mostrarModalAdmin" 
-        [style]="{ width: '38rem' }"
-        styleClass="custom-dialog"
-        [focusTrap]="false"
-      >
-        <form [formGroup]="adminForm" (ngSubmit)="procesarAdministrativo()" class="modal-form">
-          @if (mensajeError()) {
-            <p-message severity="error" [text]="mensajeError()" styleClass="w-full mb-4"></p-message>
-          }
-          
-          <div class="form-field mb-4">
-            <label for="prioridad" class="form-label">Prioridad <span class="required">*</span></label>
-            <p-select 
-              id="prioridad" 
-              formControlName="prioridad" 
-              [options]="prioridadesOptions" 
-              optionLabel="label" 
-              optionValue="value" 
-              placeholder="Seleccione la prioridad"
-              styleClass="w-full"
-              appendTo="body">
-            </p-select>
-          </div>
-
-          <div class="form-field mb-4">
-            <label for="justificacion" class="form-label">Justificación <span class="required">*</span></label>
-            <textarea 
-              pTextarea 
-              id="justificacion" 
-              formControlName="justificacion" 
-              rows="3" 
-              class="w-full"
-              placeholder="Escriba la justificación para la prioridad seleccionada...">
-            </textarea>
-          </div>
-
-          <div class="dialog-section-divider">
-            <span>Docente / Directivo Responsable</span>
-          </div>
-
-          <div class="form-field mb-5">
-            <label for="responsableSeleccionado" class="form-label">Asignar Responsable <span class="required">*</span></label>
-            <p-select 
-              id="responsableSeleccionado" 
-              formControlName="responsableSeleccionado" 
-              [options]="responsablesOptions()" 
-              optionLabel="label" 
-              optionValue="value"
-              placeholder="Busque y seleccione el responsable..."
-              [filter]="true"
-              filterPlaceholder="Buscar por nombre o documento..."
-              styleClass="w-full"
-              appendTo="body">
-            </p-select>
-          </div>
-
-          <div class="form-actions">
-            <p-button label="Cancelar" severity="secondary" [outlined]="true" (onClick)="mostrarModalAdmin.set(false)" styleClass="btn-dialog-cancel" />
-            <p-button label="Confirmar Asignación" type="submit" [disabled]="adminForm.invalid || enviando()" [loading]="enviando()" styleClass="btn-dialog-submit" />
-          </div>
-        </form>
-      </p-dialog>
-
-      <!-- Modal: Atender Solicitud (Docente/Directivo) -->
-      <p-dialog 
-        header="Atender Solicitud" 
-        [modal]="true" 
-        [(visible)]="mostrarModalDocente" 
-        [style]="{ width: '32rem' }"
-        styleClass="custom-dialog"
-        [focusTrap]="false"
-      >
-        <form [formGroup]="docenteForm" (ngSubmit)="procesarDocente()" class="modal-form">
-          @if (mensajeError()) {
-            <p-message severity="error" [text]="mensajeError()" styleClass="w-full mb-4"></p-message>
-          }
-
-          <div class="form-field mb-4">
-            <label for="observacionDocente" class="form-label">Observación de Atención <span class="required">*</span></label>
-            <textarea 
-              pTextarea 
-              id="observacionDocente" 
-              formControlName="observacion" 
-              rows="4" 
-              class="w-full"
-              placeholder="Detalle la solución, respuesta académica o dictamen dado a la solicitud...">
-            </textarea>
-          </div>
-
-          <div class="form-actions">
-            <p-button label="Cancelar" severity="secondary" [outlined]="true" (onClick)="mostrarModalDocente.set(false)" styleClass="btn-dialog-cancel" />
-            <p-button label="Marcar como Atendida" type="submit" [disabled]="docenteForm.invalid || enviando()" [loading]="enviando()" styleClass="btn-dialog-submit btn-success-action" />
-          </div>
-        </form>
-      </p-dialog>
-
-      <!-- Modal: Cierre o Revisión (Estudiante) -->
-      <p-dialog 
-        [header]="accionActual() === 'RECHAZAR' ? 'Solicitar Revisión de Trámite' : 'Aceptar Solución y Cerrar'" 
-        [modal]="true" 
-        [(visible)]="mostrarModalEstudiante" 
-        [style]="{ width: '32rem' }"
-        styleClass="custom-dialog"
-        [focusTrap]="false"
-      >
-        <form [formGroup]="estudianteForm" (ngSubmit)="procesarEstudiante()" class="modal-form">
-          @if (mensajeError()) {
-            <p-message severity="error" [text]="mensajeError()" styleClass="w-full mb-4"></p-message>
-          }
-
-          <div class="form-field mb-4">
-            <label for="observacionEstudiante" class="form-label">
-              {{ accionActual() === 'RECHAZAR' ? 'Justificación del Rechazo *' : 'Comentarios de Cierre (Opcional)' }}
-            </label>
-            <textarea 
-              pTextarea 
-              id="observacionEstudiante" 
-              formControlName="observacion" 
-              rows="4" 
-              class="w-full"
-              [placeholder]="accionActual() === 'RECHAZAR' ? 'Explique detalladamente por qué la solución propuesta no es satisfactoria y qué requiere revisión...' : 'Opcionalmente puede dejar un comentario sobre el proceso o cierre de su solicitud...'">
-            </textarea>
-          </div>
-
-          <div class="form-actions">
-            <p-button label="Cancelar" severity="secondary" [outlined]="true" (onClick)="mostrarModalEstudiante.set(false)" styleClass="btn-dialog-cancel" />
-            <p-button 
-              [label]="accionActual() === 'RECHAZAR' ? 'Enviar a Revisión' : 'Confirmar Cierre'" 
-              type="submit" 
-              [disabled]="estudianteForm.invalid || enviando()" 
-              [loading]="enviando()"
-              [styleClass]="accionActual() === 'RECHAZAR' ? 'btn-dialog-submit btn-danger-action' : 'btn-dialog-submit btn-success-action'">
-            </p-button>
-          </div>
-        </form>
-      </p-dialog>
-    } @else {
-      <p-card styleClass="error-card">
-        <div class="error-state">
-          <i class="pi pi-exclamation-circle error-icon"></i>
-          <h3 class="error-title">No se pudo cargar la solicitud</h3>
-          <p class="error-description">Ocurrió un problema al obtener los detalles del radicado. Por favor verifique el código e intente de nuevo.</p>
-          <div class="error-actions">
-            <p-button 
-              label="Volver a la Lista" 
-              icon="pi pi-arrow-left" 
-              (onClick)="volver()"
-              styleClass="btn-back-error">
-            </p-button>
+          <p-divider></p-divider>
+          <div class="info-row">
+            <span class="info-label">
+              <i class="pi pi-hashtag"></i>
+              Número de Documento
+            </span>
+            <span class="info-value">{{ solicitud()!.solicitante.numeroDocumento }}</span>
           </div>
         </div>
       </p-card>
+
+      <!-- Detalles de la Solicitud -->
+      <p-card styleClass="detalles-card info-card">
+        <div class="card-section-title">Detalles de Radicación</div>
+        <div class="info-rows-container">
+          <div class="info-row">
+            <span class="info-label">
+              <i class="pi pi-bookmark"></i>
+              Tipo de Trámite
+            </span>
+            <span class="info-value">{{ formatTipo(solicitud()!.tipo) }}</span>
+          </div>
+          <p-divider></p-divider>
+          <div class="info-row">
+            <span class="info-label">
+              <i class="pi pi-flag"></i>
+              Estado de Gestión
+            </span>
+            <p-tag [value]="formatEstado(solicitud()!.estado)" [severity]="getEstadoSeverity(solicitud()!.estado)"
+              styleClass="status-pill">
+            </p-tag>
+          </div>
+          <p-divider></p-divider>
+          <div class="info-row">
+            <span class="info-label">
+              <i class="pi pi-calendar-plus"></i>
+              Fecha Radicación
+            </span>
+            <span class="info-value">
+              {{ solicitud()!.fechaCreacion | date: 'dd/MM/yyyy HH:mm' }}
+            </span>
+          </div>
+          @if (solicitud()!.responsable) {
+          <p-divider></p-divider>
+          <div class="info-row">
+            <span class="info-label">
+              <i class="pi pi-briefcase"></i>
+              Responsable Asignado
+            </span>
+            <span class="info-value">
+              {{ solicitud()!.responsable!.nombre }}
+            </span>
+          </div>
+          }
+        </div>
+      </p-card>
+
+      <!-- Historial de la Solicitud -->
+      <p-card styleClass="historial-card info-card">
+        <div class="card-section-title">Historial de Gestión</div>
+
+        @if (historialLoading()) {
+        <div class="historial-loading">
+          <i class="pi pi-spin pi-spinner spinner-icon"></i>
+          <span>Cargando historial de cambios...</span>
+        </div>
+        } @else if (historial().length === 0) {
+        <p class="empty-historial">No hay registros de historial para esta solicitud.</p>
+        } @else {
+        <div class="timeline-container">
+          @for (registro of historial(); track $index) {
+          <div class="timeline-item">
+            <div class="timeline-marker" [class]="registro.estadoAsociado.toLowerCase()">
+              <i [class]="getEstadoIcon(registro.estadoAsociado)"></i>
+            </div>
+            <div class="timeline-content-box">
+              <div class="timeline-header-row">
+                <span class="timeline-state-badge" [class]="registro.estadoAsociado.toLowerCase()">
+                  {{ formatEstado(registro.estadoAsociado) }}
+                </span>
+                <span class="timeline-date">{{ registro.fecha | date: 'dd/MM/yyyy HH:mm' }}</span>
+              </div>
+              <p class="timeline-desc">{{ registro.descripcion }}</p>
+            </div>
+          </div>
+          }
+        </div>
+        }
+      </p-card>
+    </div>
+
+    <!-- Barra de Acciones de Gestión -->
+    <div class="acciones-section">
+      <div class="acciones-container">
+        <p-button label="Volver a Solicitudes" icon="pi pi-arrow-left" severity="secondary" [outlined]="true"
+          (onClick)="volver()" styleClass="btn-back">
+        </p-button>
+
+        @if (solicitud()!.estado === 'REGISTRADA' && rolUsuario() === 'ADMINISTRATIVO') {
+        <p-button label="Clasificar y Asignar Solicitud" icon="pi pi-sitemap" severity="warn"
+          (onClick)="abrirModalAdmin()" styleClass="btn-admin">
+        </p-button>
+        }
+
+        @if (solicitud()!.estado === 'EN_ATENCION' && (rolUsuario() === 'DOCENTE' || rolUsuario() === 'DIRECTIVO')) {
+        <p-button label="Atender Solicitud" icon="pi pi-check-circle" severity="success" (onClick)="abrirModalDocente()"
+          styleClass="btn-docente">
+        </p-button>
+        }
+
+        @if (solicitud()!.estado === 'ATENDIDA' && rolUsuario() === 'ESTUDIANTE') {
+        <p-button label="Aceptar Solución" icon="pi pi-check" severity="success"
+          (onClick)="abrirModalEstudiante('CERRAR')" styleClass="btn-estudiante-accept">
+        </p-button>
+
+        <p-button label="Solicitar Revisión" icon="pi pi-refresh" severity="danger"
+          (onClick)="abrirModalEstudiante('RECHAZAR')" styleClass="btn-estudiante-reject">
+        </p-button>
+        }
+      </div>
+    </div>
+
+    <!-- Modal: Clasificar y Asignar -->
+    <p-dialog header="Clasificar y Asignar Solicitud" [modal]="true" [(visible)]="mostrarModalAdmin"
+      [style]="{ width: '38rem' }" styleClass="custom-dialog" [focusTrap]="false">
+      <form [formGroup]="adminForm" (ngSubmit)="procesarAdministrativo()" class="modal-form">
+        @if (mensajeError()) {
+        <p-message severity="error" [text]="mensajeError()" styleClass="w-full mb-4"></p-message>
+        }
+
+        <div class="form-field mb-4">
+          <label for="prioridad" class="form-label">Prioridad <span class="required">*</span></label>
+          <p-select id="prioridad" formControlName="prioridad" [options]="prioridadesOptions" optionLabel="label"
+            optionValue="value" placeholder="Seleccione la prioridad" styleClass="w-full" appendTo="body">
+          </p-select>
+        </div>
+
+        <div class="form-field mb-4">
+          <label for="justificacion" class="form-label">Justificación <span class="required">*</span></label>
+          <textarea pTextarea id="justificacion" formControlName="justificacion" rows="3" class="w-full"
+            placeholder="Escriba la justificación para la prioridad seleccionada...">
+            </textarea>
+        </div>
+
+        <div class="dialog-section-divider">
+          <span>Docente / Directivo Responsable</span>
+        </div>
+
+        <div class="form-field mb-5">
+          <label for="responsableSeleccionado" class="form-label">Asignar Responsable <span
+              class="required">*</span></label>
+          <p-select id="responsableSeleccionado" formControlName="responsableSeleccionado"
+            [options]="responsablesOptions()" optionLabel="label" optionValue="value"
+            placeholder="Busque y seleccione el responsable..." [filter]="true"
+            filterPlaceholder="Buscar por nombre o documento..." styleClass="w-full" appendTo="body">
+          </p-select>
+        </div>
+
+        <div class="form-actions">
+          <p-button label="Cancelar" severity="secondary" [outlined]="true" (onClick)="mostrarModalAdmin.set(false)"
+            styleClass="btn-dialog-cancel" />
+          <p-button label="Confirmar Asignación" type="submit" [disabled]="adminForm.invalid || enviando()"
+            [loading]="enviando()" styleClass="btn-dialog-submit" />
+        </div>
+      </form>
+    </p-dialog>
+
+    <!-- Modal: Atender Solicitud -->
+    <p-dialog header="Atender Solicitud" [modal]="true" [(visible)]="mostrarModalDocente" [style]="{ width: '32rem' }"
+      styleClass="custom-dialog" [focusTrap]="false">
+      <form [formGroup]="docenteForm" (ngSubmit)="procesarDocente()" class="modal-form">
+        @if (mensajeError()) {
+        <p-message severity="error" [text]="mensajeError()" styleClass="w-full mb-4"></p-message>
+        }
+
+        <div class="form-field mb-4">
+          <label for="observacionDocente" class="form-label">Observación de Atención <span
+              class="required">*</span></label>
+          <textarea pTextarea id="observacionDocente" formControlName="observacion" rows="4" class="w-full"
+            placeholder="Detalle la solución, respuesta académica o dictamen dado a la solicitud...">
+            </textarea>
+        </div>
+
+        <div class="form-actions">
+          <p-button label="Cancelar" severity="secondary" [outlined]="true" (onClick)="mostrarModalDocente.set(false)"
+            styleClass="btn-dialog-cancel" />
+          <p-button label="Marcar como Atendida" type="submit" [disabled]="docenteForm.invalid || enviando()"
+            [loading]="enviando()" styleClass="btn-dialog-submit btn-success-action" />
+        </div>
+      </form>
+    </p-dialog>
+
+    <!-- Modal: Cierre o Revisión -->
+    <p-dialog [header]="accionActual() === 'RECHAZAR' ? 'Solicitar Revisión de Trámite' : 'Aceptar Solución y Cerrar'"
+      [modal]="true" [(visible)]="mostrarModalEstudiante" [style]="{ width: '32rem' }" styleClass="custom-dialog"
+      [focusTrap]="false">
+      <form [formGroup]="estudianteForm" (ngSubmit)="procesarEstudiante()" class="modal-form">
+        @if (mensajeError()) {
+        <p-message severity="error" [text]="mensajeError()" styleClass="w-full mb-4"></p-message>
+        }
+
+        <div class="form-field mb-4">
+          <label for="observacionEstudiante" class="form-label">
+            {{ accionActual() === 'RECHAZAR' ? 'Justificación del Rechazo *' : 'Comentarios de Cierre (Opcional)' }}
+          </label>
+          <textarea pTextarea id="observacionEstudiante" formControlName="observacion" rows="4" class="w-full"
+            [placeholder]="accionActual() === 'RECHAZAR' ? 'Explique detalladamente por qué la solución propuesta no es satisfactoria y qué requiere revisión...' : 'Opcionalmente puede dejar un comentario sobre el proceso o cierre de su solicitud...'">
+            </textarea>
+        </div>
+
+        <div class="form-actions">
+          <p-button label="Cancelar" severity="secondary" [outlined]="true"
+            (onClick)="mostrarModalEstudiante.set(false)" styleClass="btn-dialog-cancel" />
+          <p-button [label]="accionActual() === 'RECHAZAR' ? 'Enviar a Revisión' : 'Confirmar Cierre'" type="submit"
+            [disabled]="estudianteForm.invalid || enviando()" [loading]="enviando()"
+            [styleClass]="accionActual() === 'RECHAZAR' ? 'btn-dialog-submit btn-danger-action' : 'btn-dialog-submit btn-success-action'">
+          </p-button>
+        </div>
+      </form>
+    </p-dialog>
+    } @else {
+    <p-card styleClass="error-card">
+      <div class="error-state">
+        <i class="pi pi-exclamation-circle error-icon"></i>
+        <h3 class="error-title">No se pudo cargar la solicitud</h3>
+        <p class="error-description">Ocurrió un problema al obtener los detalles del radicado. Por favor verifique el
+          código e intente de nuevo.</p>
+        <div class="error-actions">
+          <p-button label="Volver a la Lista" icon="pi pi-arrow-left" (onClick)="volver()" styleClass="btn-back-error">
+          </p-button>
+        </div>
+      </div>
+    </p-card>
     }
   </div>
 </div>

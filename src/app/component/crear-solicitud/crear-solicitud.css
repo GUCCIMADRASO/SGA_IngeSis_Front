@@ -1,16 +1,15 @@
-/* ===== WRAPPER ===== */
 .crear-solicitud-wrapper {
   min-height: 100vh;
-  background-color: #f8fafc; /* Soft Slate-50 background */
+  background-color: #f8fafc;
 }
 
 .crear-solicitud-container {
-  max-width: 720px; /* Bounded width for clean single-column form UX */
+  max-width: 720px;
   margin: 0 auto;
   padding: 3rem 1.5rem;
 }
 
-/* ===== PAGE HEADER (MINIMALIST) ===== */
+
 .crear-solicitud-header {
   display: flex;
   justify-content: space-between;
@@ -39,7 +38,7 @@
   font-weight: 400;
 }
 
-/* ===== SOLICITANTE CARD ===== */
+
 .solicitante-card {
   display: flex;
   align-items: center;
@@ -92,9 +91,9 @@
   gap: 0.35rem;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #16a34a; /* Green 600 */
-  background: #f0fdf4; /* Green 50 */
-  border: 1px solid #bbf7d0; /* Green 200 */
+  color: #16a34a;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
   padding: 0.25rem 0.625rem;
   border-radius: 999px;
   white-space: nowrap;
@@ -104,7 +103,7 @@
   font-size: 0.8rem;
 }
 
-/* ===== FORM CARD (CLEAN FLAT PANEL) ===== */
+
 ::ng-deep .form-card.p-card {
   border-radius: 12px !important;
   border: 1px solid #e2e8f0 !important;
@@ -133,7 +132,7 @@
   font-size: 1.25rem;
 }
 
-/* ===== FORM GRID & FIELDS ===== */
+
 .form-grid {
   display: flex;
   flex-direction: column;
@@ -158,7 +157,6 @@
   margin-left: 0.125rem;
 }
 
-/* ===== INPUT TEXTAREA ===== */
 ::ng-deep textarea.p-inputtextarea {
   width: 100% !important;
   padding: 0.75rem 1rem !important;
@@ -205,7 +203,7 @@
   font-weight: 600;
 }
 
-/* ===== PRIME NG SELECT OVERRIDES ===== */
+
 ::ng-deep .form-field .p-select {
   border: 1px solid #cbd5e1 !important;
   border-radius: 8px !important;
@@ -242,7 +240,7 @@
   padding-right: 0.75rem !important;
 }
 
-/* Overlay dropdown dropdown panel styling */
+
 ::ng-deep .p-select-overlay {
   border-radius: 8px !important;
   border: 1px solid #e2e8f0 !important;
@@ -278,7 +276,7 @@
   font-weight: 600 !important;
 }
 
-/* Custom Dropdown Option Template */
+
 .tipo-option {
   display: flex;
   align-items: flex-start;
@@ -309,7 +307,7 @@
   color: #64748b;
 }
 
-/* ===== ERROR HANDLING ===== */
+
 .p-error {
   color: #ef4444;
   font-size: 0.8rem;
@@ -324,7 +322,7 @@
   font-size: 0.85rem;
 }
 
-/* ===== MESSAGES / BANNER ===== */
+
 ::ng-deep .result-message-banner.p-message {
   margin-bottom: 1.5rem !important;
   border-radius: 8px !important;
@@ -334,7 +332,8 @@
 .custom-success-message {
   display: flex;
   gap: 0.75rem;
-  color: #166534; /* Green 800 */
+  color: #166534;
+
 }
 
 .custom-success-message i {
@@ -362,7 +361,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #991b1b; /* Red 800 */
+  color: #991b1b;
   font-size: 0.875rem;
   font-weight: 600;
 }
@@ -372,7 +371,7 @@
   flex-shrink: 0;
 }
 
-/* ===== FORM ACTIONS ===== */
+
 .form-actions {
   display: flex;
   gap: 0.75rem;
@@ -395,7 +394,7 @@
   border-radius: 8px !important;
   font-weight: 600 !important;
   font-size: 0.95rem !important;
-  background: #0f172a !important; /* Deep Slate button */
+  background: #0f172a !important;
   border: 1px solid #0f172a !important;
   color: #ffffff !important;
   transition: all 0.2s ease !important;
@@ -415,7 +414,6 @@
   transform: none !important;
 }
 
-/* ===== FOOTER INFO ===== */
 .card-footer-info {
   display: flex;
   align-items: start;
@@ -435,7 +433,6 @@
   font-size: 0.95rem;
 }
 
-/* ===== INFO SECTION ===== */
 .info-section {
   margin-top: 2.5rem;
 }
@@ -509,7 +506,6 @@
   line-height: 1.4;
 }
 
-/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .crear-solicitud-container {
     padding: 1.5rem 1rem;

@@ -81,7 +81,6 @@ export class Navbar implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar perfil:', err);
-        // Si falla la carga del perfil, probablemente el token expiró
         this.logout();
       },
     });

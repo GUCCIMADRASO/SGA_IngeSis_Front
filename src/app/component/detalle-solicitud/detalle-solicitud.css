@@ -162,6 +162,8 @@
   color: #334155;
   margin: 0;
   white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .info-rows-container {
@@ -195,6 +197,8 @@
   color: #0f172a;
   text-align: right;
   font-size: 0.9rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 ::ng-deep .status-pill.p-tag {
@@ -782,4 +786,6 @@
   color: #334155; /* Slate 700 */
   margin: 0;
   white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
